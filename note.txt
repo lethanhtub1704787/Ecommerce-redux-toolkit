@@ -1,0 +1,8 @@
+memo cho phép truyền vào một function trả về một boolean :
+- Nếu false => rerender
+- true => ko rerender
+
+useMemo , useCallBack tự động so sánh giá trị trước và sau của dependencies. 
+Nếu cùng giá trị :
+- return true => nếu true khởi tạo lại function hoặc tính toán lại giá trị
+- false => trả về function hoặc giá trị cũ
