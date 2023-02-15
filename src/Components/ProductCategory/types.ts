@@ -3,10 +3,11 @@ import {ImageSourcePropType} from 'react-native';
 export type Category = {
   id: number;
   image: ImageSourcePropType;
-  typeName: string;
+  categoryName: string;
 };
 
 export type Props = {
   item: Category;
-  onPress: Function;
+  isFocused: boolean;
+  onPress: () => void;
 };

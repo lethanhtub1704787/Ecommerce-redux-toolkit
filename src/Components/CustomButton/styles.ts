@@ -2,13 +2,12 @@ import {StyleSheet} from 'react-native';
 export const styles = StyleSheet.create({
   buttonStyle: {
     flexDirection: 'row',
-    backgroundColor: '#F77952',
+    backgroundColor: '#F67952',
     width: 218,
     height: 59,
     borderRadius: 133,
     justifyContent: 'center',
     alignItems: 'center',
-    // flex:1,
   },
   buttonText: {
     fontSize: 16,

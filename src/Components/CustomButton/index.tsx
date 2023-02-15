@@ -1,17 +1,15 @@
-import {View, Text, TouchableOpacity, Image} from 'react-native';
+import {Text, TouchableOpacity} from 'react-native';
 import React from 'react';
 import {styles} from './styles';
 
 type Props = {
   text: string;
-  image?: string;
-  image2?: string;
-  image3?: string;
+  onPress: () => void;
 };
 
-const CustomButton: React.FC<Props> = ({text}: Props) => {
+const CustomButton: React.FC<Props> = ({text, onPress}: Props) => {
   return (
-    <TouchableOpacity style={styles.buttonStyle}>
+    <TouchableOpacity style={styles.buttonStyle} onPress={onPress}>
       <Text style={styles.buttonText}>{text}</Text>
     </TouchableOpacity>
   );

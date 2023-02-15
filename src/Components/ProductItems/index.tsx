@@ -11,7 +11,7 @@ const ProductItems: React.FC<Props> = ({
 }: Props) => {
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
-      <Image source={item.image} />
+      <Image source={item.image} style={styles.image} />
       <Text style={styles.productName}>{item.productName}</Text>
       <Text style={styles.productPrice}>${item.productPrice}</Text>
       {favoriteShow && (
@@ -27,9 +27,9 @@ const ProductItems: React.FC<Props> = ({
 };
 
 const areEqual = (preData: Props, data: Props) => {
-  if (preData.item.isFavorite !== data.item.isFavorite) {
-    return false;
-  }
+  // if (preData.item.isFavorite !== data.item.isFavorite) {
+  //   return false;
+  // }
   return true;
 };
-export default memo(ProductItems, areEqual);
+export default memo(ProductItems);

@@ -28,7 +28,7 @@ const RootStack = () => {
         screenOptions={{
           headerShown: false,
         }}
-        initialRouteName="HomeStack">
+        initialRouteName="AuthStack">
         <Stack.Screen
           name="Onbroding1"
           component={Onbroding}

@@ -1,6 +1,6 @@
 import MyTabBar from '@/Components/CustomTabBar';
 import Cart from '@/Screens/Cart';
-import Like from '@/Screens/Like';
+import Like from '@/Screens/Favorite';
 import Home from '@/Screens/Home';
 import Profile from '@/Screens/Profile';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';

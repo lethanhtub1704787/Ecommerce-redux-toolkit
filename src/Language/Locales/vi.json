@@ -2,5 +2,5 @@
     "login" : "Đăng nhập",
     "signUp" : "Đăng ký",
     "home" : "Trang chủ",
-    "quantityProductAvailable": "%{quantity} sản phẩm có sẳn",
+    // "quantityProductAvailable": "%{quantity} sản phẩm có sẳn",
 }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   SafeAreaView,
   Text,
@@ -10,7 +10,16 @@ import {
 // import CustomButton from '@/Components/CustomButton';
 import styles from './styles';
 import {Images} from '@/Themes/Images';
+import {useAppDispatch} from '@/Hooks/reduxHook';
+import {loginRequest} from '@/Redux/Reducers/authReducer';
 const Login = ({navigation}: {navigation: any}) => {
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const dispatch = useAppDispatch();
+  const handleLogin = () => {
+    const obj = {email: email, password: password};
+    dispatch(loginRequest(obj));
+  };
   const backgroundStyle = {
     backgroundColor: '#E5E5E5',
   };
@@ -31,6 +40,8 @@ const Login = ({navigation}: {navigation: any}) => {
             placeholder="Email"
             style={styles.inputBox}
             placeholderTextColor="#230A06"
+            onChangeText={setEmail}
+            value={email}
           />
         </View>
         <View style={styles.inputContainer}>
@@ -41,12 +52,15 @@ const Login = ({navigation}: {navigation: any}) => {
             placeholder="Password"
             style={styles.inputBox}
             placeholderTextColor="#230A06"
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry={true}
           />
         </View>
         <TouchableOpacity style={styles.forgotPassword}>
           <Text style={styles.forgotPasswordText}>Forgot password?</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.buttonStyle}>
+        <TouchableOpacity style={styles.buttonStyle} onPress={handleLogin}>
           <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
         <View style={styles.otherMethod}>

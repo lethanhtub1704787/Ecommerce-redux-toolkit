@@ -2,5 +2,5 @@
     "login" : "Login",
     "signUp" : "Sign up",
     "home" : "Home",
-    "quantityProductAvailable": "%{quantity} product",
+    // "quantityProductAvailable": "%{quantity} product",
 }

@@ -22,23 +22,27 @@ import RootStack from '@/Navigation/Navigation';
 import SignUp from '@/Screens/SignUp';
 import Home from '@/Screens/Home';
 import Language from '@/Language';
+import {Provider} from 'react-redux';
+import {store} from '@/Redux/store';
 
 const App = () => {
   return (
-    <View style={{flex: 1}}>
-      <StatusBar barStyle={'dark-content'} backgroundColor={'#E5E5E5'} />
-      {/* <Home /> */}
-      <RootStack />
-      <Language />
-      {/* <Splash /> */}
-      {/* <CustomHeader currentStep={'1'} skip={'Skip'} finalStep={false} /> */}
-      {/* <Onbroding /> */}
-      {/* <Onbroding2 /> */}
-      {/* <Onbroding3 /> */}
-      {/* <Login /> */}
-      {/* <SignUp /> */}
-      {/* <CustomButton /> */}
-    </View>
+    <Provider store={store}>
+      <View style={{flex: 1}}>
+        <StatusBar barStyle={'dark-content'} backgroundColor={'#E5E5E5'} />
+        {/* <Home /> */}
+        <RootStack />
+        <Language />
+        {/* <Splash /> */}
+        {/* <CustomHeader currentStep={'1'} skip={'Skip'} finalStep={false} /> */}
+        {/* <Onbroding /> */}
+        {/* <Onbroding2 /> */}
+        {/* <Onbroding3 /> */}
+        {/* <Login /> */}
+        {/* <SignUp /> */}
+        {/* <CustomButton /> */}
+      </View>
+    </Provider>
   );
 };
 

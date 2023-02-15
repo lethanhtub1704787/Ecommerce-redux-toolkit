@@ -40,4 +40,9 @@ export const Images = {
   sample6: require('@/Images/Clothes/sample/6.png'),
   goback_1x: require('@/Images/GoBack/Goback_1x.png'),
   more_1x: require('@/Images/More/More_1x.png'),
+  product_detail: require('@/Images/ProductDetails/1.png'),
+  product_black: require('@/Images/ProductDetails/black.png'),
+  product_white: require('@/Images/ProductDetails/white.png'),
+  product_beige: require('@/Images/ProductDetails/beige.png'),
+  product_red: require('@/Images/ProductDetails/red.png'),
 };

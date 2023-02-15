@@ -6,10 +6,14 @@ import GoBack from 'react-native-vector-icons/Entypo';
 import {onGoBack} from '@/Navigation/NavigationAction';
 
 type DetailHeader = {
-  isItemFavorite: boolean;
+  isItemFavorite: boolean | undefined;
+  itemId: number;
 };
 
-const Header: React.FC<DetailHeader> = ({isItemFavorite}: DetailHeader) => {
+const Header: React.FC<DetailHeader> = ({
+  isItemFavorite,
+  itemId,
+}: DetailHeader) => {
   const [isFavorite, setisFavorite] = useState<boolean | undefined>(
     isItemFavorite,
   );

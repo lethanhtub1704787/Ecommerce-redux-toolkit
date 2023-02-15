@@ -19,4 +19,11 @@ export const styles = StyleSheet.create({
     opacity: 0.5,
     marginTop: 5,
   },
+  focusedButton: {
+    backgroundColor: '#FFFFFF',
+    borderWidth: 0,
+  },
+  focusedText: {
+    fontWeight: 'bold',
+  },
 });

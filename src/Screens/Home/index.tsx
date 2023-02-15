@@ -7,18 +7,38 @@ import {
   FlatList,
   Alert,
 } from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import {styles} from './styles';
 import CustomHeader from '@/Components/CustomHeader';
 import Search from 'react-native-vector-icons/AntDesign';
 import {Images} from '@/Themes/Images';
 import ProductItems from '@/Components/ProductItems';
-import {PRODUCT_DATA, PRODUCT_TYPE} from './models';
+import {PRODUCT_DATA, PRODUCT_TYPE, PRODUCT_SHIRT} from './models';
 import ProductCategory from '@/Components/ProductCategory';
 import {Category} from '@/Components/ProductCategory/types';
-import {navigate} from '@/Navigation/NavigationAction';
-import {translate} from '@/Language';
+import {navigate, pushScreen} from '@/Navigation/NavigationAction';
+// import {translate} from '@/Language';
+import {ProductParams} from '@/Components/ProductItems/types';
+// import {PRODUCT_CATEGORY} from '@/Contants';
 const Home = () => {
+  const [currentCategoryFocus, setCurrentCategoryFocus] =
+    useState<String>('Shirt');
+
+  const [productData, setProductData] =
+    useState<Array<ProductParams>>(PRODUCT_DATA);
+
+  const handleCategory = (category: string) => {
+    setCurrentCategoryFocus(category);
+
+    category === 'Shirt'
+      ? setProductData(PRODUCT_DATA)
+      : setProductData(PRODUCT_SHIRT);
+  };
+
+  const isCategoryFocus = (categoryName: string) => {
+    return currentCategoryFocus === categoryName;
+  };
+
   const keyExtractor = (item: Category) => {
     return 'key' + item.id;
   };
@@ -34,13 +54,26 @@ const Home = () => {
       <ProductCategory
         key={'category' + item.id + index}
         item={item}
-        onPress={() => Alert.alert('item pressed')}
+        onPress={() => handleCategory(item.categoryName)}
+        isFocused={isCategoryFocus(item.categoryName)}
       />
     );
   };
 
-  const goSearch = () => {
-    navigate('Search');
+  const renderProductItem = ({
+    item,
+    index,
+  }: {
+    item: ProductParams;
+    index: number;
+  }) => {
+    return (
+      <ProductItems
+        key={'product' + item.id + index}
+        item={item}
+        onPress={() => pushScreen('ProductDetails', {product: item})}
+      />
+    );
   };
 
   const onFilterPress = () => {};
@@ -48,7 +81,8 @@ const Home = () => {
   return (
     <View style={{flex: 1}}>
       <CustomHeader
-        text={translate('quantityProductAvailable', {quantity: 10})}
+        // text={translate('quantityProductAvailable', {quantity: 10})}
+        text={'Home'}
         drawer={true}
         notification={true}
       />
@@ -59,7 +93,9 @@ const Home = () => {
           <Search name="search1" style={styles.searchIcon} />
           <TouchableOpacity
             style={styles.searchInput}
-            onPress={goSearch}
+            onPress={() => {
+              navigate('Search');
+            }}
             activeOpacity={1}>
             <Text style={{color: 'rgba(0, 0, 0, 0.9)'}}>Search items...</Text>
           </TouchableOpacity>
@@ -83,15 +119,8 @@ const Home = () => {
         </View>
         <View style={styles.arrivalList}>
           <FlatList
-            renderItem={({item}) => (
-              <ProductItems
-                item={item}
-                onPress={() => {
-                  Alert.alert('product item pressed');
-                }}
-              />
-            )}
-            data={PRODUCT_DATA}
+            renderItem={renderProductItem}
+            data={productData}
             horizontal
           />
         </View>
