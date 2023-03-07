@@ -1,7 +1,13 @@
-import {Text, TouchableOpacity, Image} from 'react-native';
+import {Text, TouchableOpacity, Image, View} from 'react-native';
 import React, {memo} from 'react';
 import {styles} from './styles';
-import {Props} from './types';
+import {Category} from '@/Types/categoryType';
+
+export type Props = {
+  item: Category;
+  isFocused: boolean;
+  onPress: () => void;
+};
 
 const ProductCategory: React.FC<Props> = ({
   item,
@@ -10,12 +16,14 @@ const ProductCategory: React.FC<Props> = ({
 }: Props) => {
   return (
     <TouchableOpacity
-      style={[styles.typeButton, isFocused && styles.focusedButton]}
+      style={[styles.categoryButton, isFocused && styles.focusedButton]}
       onPress={onPress}>
-      <Image source={item.image} />
-      <Text style={[styles.typeText, isFocused && styles.focusedText]}>
-        {item.categoryName}
-      </Text>
+      <Image source={{uri: item.image.url}} style={styles.categoryImage} />
+      <View style={styles.nameContainer}>
+        <Text style={[styles.categoryName, isFocused && styles.focusedText]}>
+          {item.name}
+        </Text>
+      </View>
     </TouchableOpacity>
   );
 };

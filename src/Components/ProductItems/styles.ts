@@ -1,16 +1,34 @@
 import {StyleSheet} from 'react-native';
 export const styles = StyleSheet.create({
   container: {
-    justifyContent: 'center',
     alignItems: 'center',
     width: 140,
-    height: 180,
+    height: 200,
     backgroundColor: 'rgba(255, 250, 247, 0.56);',
+    // backgroundColor: 'red',
     borderRadius: 15,
-    marginRight: 35,
+    marginHorizontal: 15,
+    // flex: 1,
+  },
+  center: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    flex: 1,
+  },
+  imageBox: {
+    backgroundColor: 'rgba(135, 199, 185, 0.1)',
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 150,
+    borderTopLeftRadius: 15,
+    borderTopRightRadius: 15,
   },
   productName: {
     color: '#000000',
+    textAlign: 'center',
+    fontSize: 12,
   },
   productPrice: {
     color: '#000000',

@@ -1,11 +1,12 @@
 import {StyleSheet} from 'react-native';
 export const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#E5E5E5',
+    // backgroundColor: 'red',
     flex: 1,
-    padding: 20,
-    // alignItems: 'center',
-    justifyContent: 'space-between',
+    backgroundColor: '#E5E5E5',
+    padding: 10,
+    alignItems: 'center',
+    // justifyContent: 'center',
   },
   explore: {
     fontSize: 32,
@@ -22,7 +23,7 @@ export const styles = StyleSheet.create({
     marginBottom: 50,
   },
   filterContainer: {
-    marginBottom: 50,
+    marginBottom: 30,
     flexDirection: 'row',
     backgroundColor: '#FFFFFF',
     alignItems: 'center',

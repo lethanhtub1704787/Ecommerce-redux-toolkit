@@ -1,9 +1,11 @@
-import {View, Text, Image, TouchableOpacity} from 'react-native';
-import React from 'react';
+/* eslint-disable react-native/no-inline-styles */
+import {View, Text, Image, TouchableOpacity, ViewStyle} from 'react-native';
+import React, {memo} from 'react';
 import {Images} from '@/Themes/Images';
 import {styles} from './styles';
 import {navigate, onGoBack} from '@/Navigation/NavigationAction';
 import {useNavigation} from '@react-navigation/native';
+import GoBack from 'react-native-vector-icons/Entypo';
 type Props = {
   text?: string;
   drawer?: boolean;
@@ -11,6 +13,7 @@ type Props = {
   notification?: boolean;
   favorite?: boolean;
   more?: boolean;
+  background?: ViewStyle;
 };
 
 const CustomHeader: React.FC<Props> = ({
@@ -20,26 +23,27 @@ const CustomHeader: React.FC<Props> = ({
   notification,
   favorite,
   more,
+  background,
 }: Props) => {
   const navigation = useNavigation();
 
   const openDrawer = () => {
     //@ts-ignore
-    navigation.toggleDrawer();
+    navigation.openDrawer();
   };
-
+  console.log('re-render CustomHeader');
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, background]}>
       {drawer ? (
         <TouchableOpacity onPress={openDrawer}>
           <Image source={Images.Drawer_1x} />
         </TouchableOpacity>
       ) : goBack ? (
         <TouchableOpacity onPress={() => onGoBack()}>
-          <Image source={Images.goback_1x} />
+          <GoBack name="chevron-left" style={styles.goBack} />
         </TouchableOpacity>
       ) : (
-        <View />
+        <View style={{marginLeft: 35}} />
       )}
 
       {text && <Text style={styles.title}>{text}</Text>}
@@ -58,10 +62,10 @@ const CustomHeader: React.FC<Props> = ({
           <Image source={Images.Heart_1x} />
         </TouchableOpacity>
       ) : (
-        <View />
+        <View style={{marginRight: 20}} />
       )}
     </View>
   );
 };
 
-export default CustomHeader;
+export default memo(CustomHeader);

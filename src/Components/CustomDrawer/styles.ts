@@ -12,7 +12,9 @@ export const styles = StyleSheet.create({
     // backgroundColor: 'blue',
   },
   avatar: {
-    borderRadius: 50,
+    borderRadius: 40,
+    width: 80,
+    height: 80,
   },
   userInfo: {
     marginLeft: 10,

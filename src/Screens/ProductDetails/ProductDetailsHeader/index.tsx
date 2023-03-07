@@ -7,7 +7,7 @@ import {onGoBack} from '@/Navigation/NavigationAction';
 
 type DetailHeader = {
   isItemFavorite: boolean | undefined;
-  itemId: number;
+  itemId: string;
 };
 
 const Header: React.FC<DetailHeader> = ({

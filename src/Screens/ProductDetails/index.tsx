@@ -1,6 +1,6 @@
-import {View, Text, Image, TouchableOpacity, Alert} from 'react-native';
+/* eslint-disable react-native/no-inline-styles */
+import {View, Text, Image, ScrollView} from 'react-native';
 import React, {useState} from 'react';
-import CustomHeader from '@/Components/CustomHeader';
 import {stylesFunc} from './styles';
 import Header from './ProductDetailsHeader';
 import {RouteProp, useRoute, useTheme} from '@react-navigation/native';
@@ -9,21 +9,28 @@ import {MyThemeTs} from '@/Themes/MyThemes';
 import {useColor} from '@/Hooks/useColor';
 import ChooseColorButton from './ChooseColorButton';
 import CustomButton from '@/Components/CustomButton';
-type routeProps = RouteProp<HomeStackParams, 'ProductDetails'>;
+import {useAppDispatch, useAppSelector} from '@/Hooks/reduxHook';
+import {addToCart} from '@/Redux/Reducers/cartReducer';
+import {selectAccessToken} from '@/Redux/Reducers/authReducer';
+import {ProductAddToCart} from '@/Types/cartType';
+
 enum COLOR_LIST {
   color1,
   color2,
   color3,
   color4,
 }
+type routeProps = RouteProp<HomeStackParams, 'ProductDetails'>;
 const ProductDetails = () => {
   const route = useRoute<routeProps>();
   const colors = useColor();
-  const {id, image, isFavorite, productName, productPrice, description} =
+  const {id, productRepresent, isFavorite, name, description} =
     route.params.product;
   const styles = stylesFunc(colors);
 
   const [currentColor, setCurrentColor] = useState<Number>(COLOR_LIST.color1);
+  const accessToken = useAppSelector(selectAccessToken);
+  const dispatch = useAppDispatch();
 
   const onChooseColor = (color: number) => {
     setCurrentColor(color);
@@ -32,17 +39,47 @@ const ProductDetails = () => {
   const isColorFocused = (color: number) => {
     return currentColor === color;
   };
+
+  const handleAddToCart = () => {
+    const product: ProductAddToCart = {
+      productId: id,
+      sizeId: productRepresent.sizes[0].sizeId,
+      colorId: productRepresent.colorId,
+      quantity: 1,
+    };
+    console.log('acccessToken: ', accessToken);
+    dispatch(addToCart({accessToken, product}));
+  };
   return (
     <View style={{flex: 1}}>
       <Header isItemFavorite={isFavorite} itemId={id} />
       <View style={styles.container}>
-        <Image source={image} style={styles.image} />
+        <Image
+          source={{uri: productRepresent.image.url}}
+          style={styles.image}
+        />
         <View style={styles.productInfo}>
           <View style={styles.nameAndPrice}>
-            <Text style={styles.productName}>{productName}</Text>
-            <Text style={styles.productName}>${productPrice}</Text>
+            <Text style={styles.productName}>{name}</Text>
+            <Text style={styles.productName}>
+              {productRepresent.defaultPrice.value +
+                ' ' +
+                productRepresent.defaultPrice.currency}
+            </Text>
           </View>
-          <Text style={styles.description}>{description}</Text>
+          <View
+            style={{
+              height: 100,
+            }}>
+            <ScrollView
+              contentContainerStyle={{
+                alignItems: 'center',
+                flexGrow: 1,
+              }}>
+              <Text style={styles.description}>{description}</Text>
+            </ScrollView>
+          </View>
+
           <Text style={styles.textColor}>Colors</Text>
           <View style={styles.colorButtonList}>
             <ChooseColorButton
@@ -67,10 +104,7 @@ const ProductDetails = () => {
             />
           </View>
           <View style={styles.center}>
-            <CustomButton
-              text="Add to Cart"
-              onPress={() => Alert.alert('added to card')}
-            />
+            <CustomButton text="Add to Cart" onPress={handleAddToCart} />
           </View>
         </View>
       </View>

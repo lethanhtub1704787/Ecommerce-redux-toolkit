@@ -2,11 +2,22 @@ import {StyleSheet, Dimensions} from 'react-native';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 export default StyleSheet.create({
+  background: {
+    backgroundColor: '#E5E5E5',
+  },
   container: {
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#E5E5E5',
     height: windowHeight,
+  },
+  center: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  errorStyle: {
+    marginTop: 5,
+    color: 'red',
   },
   image: {
     // width: 54,
@@ -64,21 +75,32 @@ export default StyleSheet.create({
     // backgroundColor: 'red',
   },
   inputBox: {
-    // backgroundColor: 'red',
     height: 57,
     width: 335 - 10 - 48,
     borderTopRightRadius: 10,
     borderBottomRightRadius: 10,
-    fontSize: 12,
-    // opacity: 0.5,
+    fontSize: 16,
     fontWeight: '400',
     marginLeft: 5,
     color: '#000000',
   },
+  textPlaceHolderColor: {
+    opacity: 0.5,
+    fontSize: 14,
+  },
+  visiblePasswordButton: {
+    position: 'absolute',
+    right: 5,
+    width: 30,
+    height: 30,
+  },
+  passwordVisible: {
+    fontSize: 20,
+    color: 'rgba(0, 0, 0, 0.5)',
+  },
   forgotPassword: {
     marginTop: 5,
     alignItems: 'flex-end',
-    // backgroundColor: 'red',
     width: 335,
   },
   forgotPasswordText: {

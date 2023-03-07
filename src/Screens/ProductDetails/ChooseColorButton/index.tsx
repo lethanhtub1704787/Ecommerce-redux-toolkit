@@ -18,6 +18,7 @@ const ChooseColorButton: React.FC<ColorButton> = ({
       <TouchableOpacity
         style={[styles.colorButton, {backgroundColor: color}]}
         onPress={onPress}
+        disabled={isFocused}
       />
     </View>
   );

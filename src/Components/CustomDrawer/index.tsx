@@ -1,68 +1,92 @@
 import {View, Text, Image, TouchableOpacity, Alert} from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {styles} from './styles';
 import {Images} from '@/Themes/Images';
-import {MENU_NAME} from '@/Contants';
+
 import DrawerCard from './DrawerCard';
-type Props = {
+import {useAppDispatch, useAppSelector} from '@/Hooks/reduxHook';
+import {
+  selectAccessToken,
+  selectUserData,
+  signOut,
+} from '@/Redux/Reducers/authReducer';
+import {navigate, resetScreen} from '@/Navigation/NavigationAction';
+
+type DrawerProps = {
   navigation: any;
 };
 
-const CustomDrawer: React.FC<Props> = ({navigation}: Props) => {
-  const userName = 'Alex Nikiforov';
-  const userJob = 'Fashion Designer';
-  const [currentMenu, setcurrentMenu] = useState<number | null>(null);
+const CustomDrawer: React.FC<DrawerProps> = ({navigation}: DrawerProps) => {
+  const accessToken = useAppSelector(selectAccessToken);
+  const userData = useAppSelector(selectUserData);
+  const userInfo = userData?.user;
+  const disPatch = useAppDispatch();
 
-  const isFocused = (card: number) => {
-    return currentMenu === card;
+  const handleLogout = () => {
+    disPatch(signOut(accessToken));
   };
+
+  const handleMyFavorites = () => {
+    navigate('Favorites');
+  };
+
+  const handleOrders = () => {
+    navigate('Orders');
+    // navigation.toggleDrawer();
+  };
+
+  useEffect(() => {
+    if (!accessToken) {
+      resetScreen('AuthStack');
+    }
+  }, [accessToken]);
+
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.userContainer}>
-        <Image source={Images.avatar_1x} style={styles.avatar} />
+        <Image
+          source={{uri: userInfo?.avatarImage.url}}
+          style={styles.avatar}
+        />
         <View style={styles.userInfo}>
-          <Text style={styles.userName}>{userName}</Text>
-          <Text style={styles.userJob}>{userJob}</Text>
+          <Text style={styles.userName}>{userInfo?.fullName}</Text>
+          <Text style={styles.userJob}>{userData?.roleName}</Text>
         </View>
         <Image source={Images.RightArrow_1x} style={styles.rightArrow} />
       </TouchableOpacity>
       <DrawerCard
         icon={Images.Heart_1x}
         name={'My favorites'}
-        isFocused={isFocused(MENU_NAME.myFavorite)}
-        onPress={() => setcurrentMenu(MENU_NAME.myFavorite)}
+        onPress={handleMyFavorites}
       />
       <DrawerCard
         icon={Images.Wallet_1x}
         name={'Wallets'}
-        isFocused={isFocused(MENU_NAME.wallets)}
-        onPress={() => setcurrentMenu(MENU_NAME.wallets)}
+        onPress={() => Alert.alert('nothing')}
       />
       <DrawerCard
         icon={Images.Order_1x}
         name={'My orders'}
-        isFocused={isFocused(MENU_NAME.orders)}
-        onPress={() => setcurrentMenu(MENU_NAME.orders)}
+        onPress={handleOrders}
       />
       <DrawerCard
         icon={Images.Document_1x}
         name={'About us'}
-        isFocused={isFocused(MENU_NAME.aboutUs)}
-        onPress={() => setcurrentMenu(MENU_NAME.aboutUs)}
+        onPress={() => Alert.alert('nothing')}
       />
       <DrawerCard
         icon={Images.Lock_1x}
         name={'Privacy policy'}
-        isFocused={isFocused(MENU_NAME.privacy)}
-        onPress={() => setcurrentMenu(MENU_NAME.privacy)}
+        onPress={() => Alert.alert('nothing')}
       />
       <DrawerCard
         icon={Images.Setting_1x}
         name={'Settings'}
-        isFocused={isFocused(MENU_NAME.settings)}
-        onPress={() => setcurrentMenu(MENU_NAME.settings)}
+        onPress={() => Alert.alert('nothing')}
       />
-      <TouchableOpacity style={[styles.drawerCard, {marginTop: 50}]}>
+      <TouchableOpacity
+        style={[styles.drawerCard, {marginTop: 50}]}
+        onPress={handleLogout}>
         <View style={styles.iconContainer}>
           <Image source={Images.Logout_1x} style={styles.icon} />
         </View>

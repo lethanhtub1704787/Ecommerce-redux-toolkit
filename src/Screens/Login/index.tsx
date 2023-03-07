@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useEffect, useState} from 'react';
 import {
   SafeAreaView,
@@ -10,21 +11,46 @@ import {
 // import CustomButton from '@/Components/CustomButton';
 import styles from './styles';
 import {Images} from '@/Themes/Images';
-import {useAppDispatch} from '@/Hooks/reduxHook';
-import {loginRequest} from '@/Redux/Reducers/authReducer';
+import {useAppDispatch, useAppSelector} from '@/Hooks/reduxHook';
+import {
+  loginRequest,
+  selectAccessToken,
+  setDefault,
+  setErrorMessage,
+} from '@/Redux/Reducers/authReducer';
+
+import {resetScreen} from '@/Navigation/NavigationAction';
+import HidePassword from 'react-native-vector-icons/MaterialIcons';
+
 const Login = ({navigation}: {navigation: any}) => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
   const dispatch = useAppDispatch();
+  const authState = useAppSelector(state => state.authState);
+  const {errorMessage} = authState;
+  const accessToken = useAppSelector(selectAccessToken);
+
   const handleLogin = () => {
-    const obj = {email: email, password: password};
-    dispatch(loginRequest(obj));
+    if (email === '' || password === '') {
+      dispatch(setErrorMessage('You must enter email and password'));
+      return;
+    }
+    dispatch(loginRequest({email: email, password: password}));
   };
-  const backgroundStyle = {
-    backgroundColor: '#E5E5E5',
-  };
+
+  useEffect(() => {
+    dispatch(setErrorMessage(''));
+  }, []);
+
+  useEffect(() => {
+    if (accessToken) {
+      resetScreen('HomeStack');
+    }
+  }, [accessToken]);
+
   return (
-    <SafeAreaView style={backgroundStyle}>
+    <SafeAreaView style={styles.background}>
       <View style={styles.container}>
         <Image source={Images.LoginIcon} style={styles.image} />
         <Text style={styles.titleStyle}>Log in</Text>
@@ -38,7 +64,10 @@ const Login = ({navigation}: {navigation: any}) => {
 
           <TextInput
             placeholder="Email"
-            style={styles.inputBox}
+            style={[
+              styles.inputBox,
+              email === '' ? styles.textPlaceHolderColor : null,
+            ]}
             placeholderTextColor="#230A06"
             onChangeText={setEmail}
             value={email}
@@ -50,18 +79,39 @@ const Login = ({navigation}: {navigation: any}) => {
           </View>
           <TextInput
             placeholder="Password"
-            style={styles.inputBox}
-            placeholderTextColor="#230A06"
+            style={[
+              styles.inputBox,
+              password === '' ? styles.textPlaceHolderColor : null,
+            ]}
+            placeholderTextColor="rgba(35, 10, 6, 1)"
             value={password}
             onChangeText={setPassword}
-            secureTextEntry={true}
+            secureTextEntry={!passwordVisible}
           />
+          <TouchableOpacity
+            style={[styles.center, styles.visiblePasswordButton]}
+            onPress={() => setPasswordVisible(prev => !prev)}>
+            <HidePassword
+              name={passwordVisible ? 'visibility' : 'visibility-off'}
+              style={styles.passwordVisible}
+            />
+          </TouchableOpacity>
         </View>
         <TouchableOpacity style={styles.forgotPassword}>
           <Text style={styles.forgotPasswordText}>Forgot password?</Text>
         </TouchableOpacity>
+        {errorMessage !== '' && (
+          <Text style={styles.errorStyle}>{errorMessage}</Text>
+        )}
         <TouchableOpacity style={styles.buttonStyle} onPress={handleLogin}>
           <Text style={styles.buttonText}>Login</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.buttonStyle}
+          onPress={() => {
+            dispatch(setDefault());
+          }}>
+          <Text style={styles.buttonText}>Reset State</Text>
         </TouchableOpacity>
         <View style={styles.otherMethod}>
           <View style={styles.underLine} />
@@ -69,12 +119,12 @@ const Login = ({navigation}: {navigation: any}) => {
           <View style={styles.underLine} />
         </View>
         <View style={styles.methodContainer}>
-          <View style={styles.fbBackground}>
+          <TouchableOpacity style={styles.fbBackground}>
             <Image source={Images.fb_icon} style={styles.fbStyle} />
-          </View>
-          <View style={styles.fbBackground}>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.fbBackground}>
             <Image source={Images.gg_icon} style={styles.fbStyle} />
-          </View>
+          </TouchableOpacity>
         </View>
         <View style={styles.noAccContainer}>
           <Text style={styles.noAccText}>Don’t have an account? </Text>
@@ -83,6 +133,7 @@ const Login = ({navigation}: {navigation: any}) => {
           </TouchableOpacity>
         </View>
       </View>
+      {/* {loadingSignIn === StatusLoading.LOADING && <GlobalLoading />} */}
     </SafeAreaView>
   );
 };

@@ -22,6 +22,7 @@ export const stylesFunc = (color: ColorTs) =>
       position: 'absolute',
       bottom: 0,
       backgroundColor: '#FFFFFF',
+      flex: 1,
       width: windowWidth,
       height: 350,
       borderTopLeftRadius: 40,
@@ -30,7 +31,7 @@ export const stylesFunc = (color: ColorTs) =>
       padding: 20,
     },
     nameAndPrice: {
-      flexDirection: 'row',
+      // flexDirection: 'row',
       justifyContent: 'space-between',
       width: '100%',
       // paddingHorizontal: 10,

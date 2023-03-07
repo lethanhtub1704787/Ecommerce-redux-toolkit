@@ -1,14 +1,13 @@
-import {ProductParams} from '@/Components/ProductItems/types';
+import {ProductItemType} from '@/Types/productType';
 import {NavigatorScreenParams} from '@react-navigation/native';
 
 export type Root = {
-  Onbroding1: undefined;
-  Onbroding2: undefined;
-  Onbroding3: undefined;
+  SplashScreen: undefined;
+  Onboarding1: undefined;
+  Onboarding2: undefined;
+  Onboarding3: undefined;
   AuthStack: NavigatorScreenParams<AuthStackParams>;
   HomeStack: NavigatorScreenParams<HomeStackParams>;
-
-  // SearchStack: NavigatorScreenParams<SearchParams>;
 };
 
 export type AuthStackParams = {
@@ -19,14 +18,16 @@ export type AuthStackParams = {
 export type BottomTabParams = {
   Home: undefined;
   Cart: undefined;
-  Like: undefined;
+  Favorites: undefined;
   Profile: undefined;
 };
 
 export type HomeStackParams = {
   Drawer: undefined;
   Search: undefined;
-  ProductDetails: {product: ProductParams};
+  ProductDetails: {product: ProductItemType};
+  CheckoutStack: CheckoutParams;
+  Orders: undefined;
 };
 
 export type DrawerParams = {
@@ -36,4 +37,9 @@ export type DrawerParams = {
 export type SearchParams = {
   Home: undefined;
   Search: undefined;
+};
+
+export type CheckoutParams = {
+  Checkout: undefined;
+  FinalCheckout: undefined;
 };

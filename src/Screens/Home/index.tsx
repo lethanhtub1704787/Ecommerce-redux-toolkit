@@ -1,42 +1,56 @@
+/* eslint-disable react-native/no-inline-styles */
 import {
   View,
   Text,
-  TextInput,
   Image,
   TouchableOpacity,
   FlatList,
   Alert,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {styles} from './styles';
 import CustomHeader from '@/Components/CustomHeader';
 import Search from 'react-native-vector-icons/AntDesign';
 import {Images} from '@/Themes/Images';
 import ProductItems from '@/Components/ProductItems';
-import {PRODUCT_DATA, PRODUCT_TYPE, PRODUCT_SHIRT} from './models';
 import ProductCategory from '@/Components/ProductCategory';
-import {Category} from '@/Components/ProductCategory/types';
 import {navigate, pushScreen} from '@/Navigation/NavigationAction';
 // import {translate} from '@/Language';
-import {ProductParams} from '@/Components/ProductItems/types';
-// import {PRODUCT_CATEGORY} from '@/Contants';
+import FilterModal from './FilterModal';
+import {useAppDispatch, useAppSelector} from '@/Hooks/reduxHook';
+import {
+  getCategory,
+  getProductData,
+  selectCategory,
+  selectProduct,
+} from '@/Redux/Reducers/productReducer';
+import {Category} from '@/Types/categoryType';
+import {ProductItemType} from '@/Types/productType';
+import {selectAccessToken} from '@/Redux/Reducers/authReducer';
+import {getCart} from '@/Redux/Reducers/cartReducer';
+
 const Home = () => {
-  const [currentCategoryFocus, setCurrentCategoryFocus] =
-    useState<String>('Shirt');
+  const productItems = useAppSelector(selectProduct);
+  const category = useAppSelector(selectCategory);
+  const accessToken = useAppSelector(selectAccessToken);
+  const dispatch = useAppDispatch();
+  const [filterVisible, setFilterVisible] = useState<boolean>(false);
+  const [currentCategoryFocus, setCurrentCategoryFocus] = useState<String>('');
 
   const [productData, setProductData] =
-    useState<Array<ProductParams>>(PRODUCT_DATA);
+    useState<Array<ProductItemType>>(productItems);
 
-  const handleCategory = (category: string) => {
-    setCurrentCategoryFocus(category);
-
-    category === 'Shirt'
-      ? setProductData(PRODUCT_DATA)
-      : setProductData(PRODUCT_SHIRT);
+  const handleCategory = (categoryId: string) => {
+    setCurrentCategoryFocus(categoryId);
+    const data = productItems.filter((item: {categoryIds: Array<string>}) => {
+      const categoryIds = item.categoryIds;
+      return categoryIds.includes(categoryId);
+    });
+    setProductData(data.slice(0, 5));
   };
 
-  const isCategoryFocus = (categoryName: string) => {
-    return currentCategoryFocus === categoryName;
+  const isCategoryFocus = (categoryId: string) => {
+    return currentCategoryFocus === categoryId;
   };
 
   const keyExtractor = (item: Category) => {
@@ -54,8 +68,8 @@ const Home = () => {
       <ProductCategory
         key={'category' + item.id + index}
         item={item}
-        onPress={() => handleCategory(item.categoryName)}
-        isFocused={isCategoryFocus(item.categoryName)}
+        onPress={() => handleCategory(item.id)}
+        isFocused={isCategoryFocus(item.id)}
       />
     );
   };
@@ -64,7 +78,7 @@ const Home = () => {
     item,
     index,
   }: {
-    item: ProductParams;
+    item: ProductItemType;
     index: number;
   }) => {
     return (
@@ -76,7 +90,19 @@ const Home = () => {
     );
   };
 
-  const onFilterPress = () => {};
+  const getData = async () => {
+    await dispatch(getProductData());
+    await dispatch(getCategory());
+    await dispatch(getCart(accessToken));
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  useEffect(() => {
+    setProductData(productItems.slice(0, 5));
+  }, [productItems]);
 
   return (
     <View style={{flex: 1}}>
@@ -85,6 +111,10 @@ const Home = () => {
         text={'Home'}
         drawer={true}
         notification={true}
+      />
+      <FilterModal
+        isVisible={filterVisible}
+        onClose={() => setFilterVisible(false)}
       />
       <View style={styles.container}>
         <Text style={styles.explore}>Explore</Text>
@@ -99,14 +129,16 @@ const Home = () => {
             activeOpacity={1}>
             <Text style={{color: 'rgba(0, 0, 0, 0.9)'}}>Search items...</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.filterButton} onPress={onFilterPress}>
+          <TouchableOpacity
+            style={styles.filterButton}
+            onPress={() => setFilterVisible(!filterVisible)}>
             <Image source={Images.Filter_1x} />
           </TouchableOpacity>
         </View>
         <View style={styles.clothesType}>
           <FlatList
             renderItem={renderProductCategory}
-            data={PRODUCT_TYPE}
+            data={category}
             keyExtractor={keyExtractor}
             horizontal
           />

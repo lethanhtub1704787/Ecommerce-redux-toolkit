@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import {
   View,
   Text,
@@ -7,18 +8,39 @@ import {
   FlatList,
   Alert,
 } from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import {styles} from './styles';
 import CustomHeader from '@/Components/CustomHeader';
 import Search from 'react-native-vector-icons/AntDesign';
 import {Images} from '@/Themes/Images';
-import {PRODUCT_DATA} from './models';
 import {pushScreen} from '@/Navigation/NavigationAction';
-import {ProductParams} from '@/Components/ProductItems/types';
 import ProductItems from '@/Components/ProductItems';
+import {ProductItemType} from '@/Types/productType';
+import {useAppSelector} from '@/Hooks/reduxHook';
+import {selectProduct} from '@/Redux/Reducers/productReducer';
 
 const SearchScreen = () => {
-  const keyExtractor = (item: ProductParams) => {
+  const productData = useAppSelector(selectProduct);
+  const [searchResult, setSearchResult] = useState<Array<ProductItemType>>([]);
+  const [searchText, setSearchText] = useState<string>('');
+
+  const searchFilter = (text: string) => {
+    if (text === 'All') {
+      setSearchResult(productData);
+    } else if (text) {
+      const newData = productData.filter((item: {name: string}) => {
+        const itemData = item.name ? item.name.toUpperCase() : ''.toUpperCase();
+        const textData = text.toUpperCase();
+        return itemData.indexOf(textData) > -1;
+      });
+      setSearchResult(newData);
+    } else {
+      setSearchResult([]);
+    }
+    setSearchText(text);
+  };
+
+  const keyExtractor = (item: ProductItemType) => {
     return 'key' + item.id;
   };
 
@@ -26,7 +48,7 @@ const SearchScreen = () => {
     item,
     index,
   }: {
-    item: ProductParams;
+    item: ProductItemType;
     index: number;
   }) => {
     return (
@@ -49,18 +71,20 @@ const SearchScreen = () => {
             placeholder="Search items..."
             style={styles.searchInput}
             placeholderTextColor="rgba(0, 0, 0, 0.9)"
+            value={searchText}
+            onChangeText={text => searchFilter(text)}
           />
           <TouchableOpacity style={styles.filterButton}>
             <Image source={Images.Filter_1x} />
           </TouchableOpacity>
         </View>
         <FlatList
-          // key={'#'}
+          persistentScrollbar={true}
           keyExtractor={keyExtractor}
           renderItem={renderProduct}
-          data={PRODUCT_DATA}
+          data={searchResult}
           numColumns={2}
-          ItemSeparatorComponent={() => <View style={{height: 20}} />}
+          ItemSeparatorComponent={() => <View style={{height: 30}} />}
         />
       </View>
     </View>

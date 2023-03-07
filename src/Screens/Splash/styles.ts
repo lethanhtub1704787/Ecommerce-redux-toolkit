@@ -9,7 +9,7 @@ export const styles = StyleSheet.create({
 
     height: windowHeight,
   },
-  //   image: {
-  //     color: '#F67952',
-  //   },
+  image: {
+    fontSize: 40,
+  },
 });

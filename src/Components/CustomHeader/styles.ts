@@ -21,10 +21,13 @@ export const styles = StyleSheet.create({
   },
   more: {
     // backgroundColor: 'red',
-    marginRight: 2,
-    width: 15,
-    height: 25,
+    width: 30,
+    height: 30,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  goBack: {
+    fontSize: 28,
+    color: '#000000',
   },
 });

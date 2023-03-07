@@ -1,9 +1,25 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {configureStore} from '@reduxjs/toolkit';
-import logger from './Logger';
-import rootReducer from './Reducers';
+import {persistReducer, persistStore} from 'redux-persist';
+// import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
+import logger from './Middleware/logger';
+import rootReducer, {RootReducer} from './Reducers';
+
+const persistConfig = {
+  key: 'root',
+  storage: AsyncStorage,
+  whitelist: ['authState'],
+  // stateReconciler: autoMergeLevel2,
+};
+
+const finalReducer = persistReducer<RootReducer>(persistConfig, rootReducer);
+
 export const store = configureStore({
-  reducer: rootReducer,
-  middleware: getDefaultMiddleware => getDefaultMiddleware().concat(logger),
+  reducer: finalReducer,
+  middleware: getDefaultMiddleware =>
+    getDefaultMiddleware({serializableCheck: false}).concat(logger),
 });
+
+export const persistor = persistStore(store);
 
 export type RootState = ReturnType<typeof store.getState>;
