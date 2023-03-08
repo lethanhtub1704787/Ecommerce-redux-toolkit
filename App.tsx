@@ -19,7 +19,7 @@ import {PersistGate} from 'redux-persist/integration/react';
 import GlobalLoading from '@/Components/Loading';
 import {subjectLoadingAsObservable} from '@/Function/RxjsLoading';
 import KeepAwake from '@sayem314/react-native-keep-awake';
-
+// import '@/Config';
 const App = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   useEffect(() => {

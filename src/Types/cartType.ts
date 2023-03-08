@@ -63,5 +63,14 @@ export type ProductAddToCart = {
 export type CartState = {
   cart: CartType;
   items: Array<CartItem>;
-  testValue: number;
+};
+
+export type UpdateQuantity = {
+  productId: string;
+  value: number;
+};
+
+export type DeleteCartItem = {
+  accessToken: string;
+  productId: string;
 };

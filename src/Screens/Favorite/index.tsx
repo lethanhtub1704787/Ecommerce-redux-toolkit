@@ -57,7 +57,7 @@ const Favorites = () => {
         <TouchableOpacity
           style={{backgroundColor: 'blue', height: 30, width: 100}}
           onPress={increment}>
-          <Text>Button</Text>
+          <Text style={{fontSize: 30}}>Button</Text>
         </TouchableOpacity>
         <Text style={{color: '#000000', fontSize: 20}}>{value}</Text>
         {/* <FlatList

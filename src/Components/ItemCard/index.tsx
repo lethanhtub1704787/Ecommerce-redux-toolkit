@@ -1,5 +1,5 @@
 import {View, Text, Image, TouchableOpacity} from 'react-native';
-import React, {memo, useState} from 'react';
+import React, {memo, useEffect, useState} from 'react';
 import {styles} from './styles';
 import {Images} from '@/Themes/Images';
 import {ProductItemType} from '@/Types/productType';
@@ -7,11 +7,12 @@ import {CartItem} from '@/Types/cartType';
 import {useAppDispatch} from '@/Hooks/reduxHook';
 import {itemIncrement} from '@/Redux/Reducers/cartReducer';
 import DeleteIcon from 'react-native-vector-icons/FontAwesome5';
+import {useDebounce} from 'use-debounce';
 type Props = {
   item: CartItem;
   cardType: 'cart' | 'order';
   onPress: () => void;
-  increaseQuantity: () => void;
+  increaseQuantity: (productId: string, value: number) => void;
   decreaseQuantity: () => void;
   deleteItem: () => void;
 };
@@ -31,10 +32,21 @@ const ItemCard: React.FC<Props> = ({
   //     </View>
   //   );
   // };
+  const [quantity, setQuantity] = useState<number>(item.quantity);
+  const [value] = useDebounce(quantity, 1000);
   const price = item.productOrder.defaultPrice.value;
   const currency = item.productOrder.defaultPrice.currency;
 
-  console.log('re-render item card');
+  console.log('re-render item card', item.quantity);
+
+  const updateQuantity = () => {
+    setQuantity(quantity + 1);
+  };
+
+  useEffect(() => {
+    increaseQuantity(item.productId, value);
+  }, [value]);
+
   return (
     <View style={styles.container}>
       <View style={styles.itemInfoContainer}>
@@ -60,12 +72,12 @@ const ItemCard: React.FC<Props> = ({
       <View style={styles.quantityStyle}>
         <TouchableOpacity
           style={styles.increaseButton}
-          onPress={increaseQuantity}>
+          onPress={updateQuantity}>
           <Text style={styles.increaseButtonText}>+</Text>
         </TouchableOpacity>
 
         <Text style={styles.quantityText} adjustsFontSizeToFit={true}>
-          {item.quantity}
+          {quantity}
         </Text>
 
         <TouchableOpacity

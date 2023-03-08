@@ -31,7 +31,7 @@ const Cart = () => {
         cardType="cart"
         item={item}
         onPress={() => Alert.alert(item.productId)}
-        increaseQuantity={() => increaseQuantity(item.productId)}
+        increaseQuantity={increaseQuantity}
         decreaseQuantity={() => decreaseQuantity(item.productId)}
         deleteItem={() => handleDeleteItem(item.productId)}
       />
@@ -55,17 +55,17 @@ const Cart = () => {
     dispatch(deleteCartItem(productId));
   };
 
-  const increaseQuantity = (productId: string) => {
-    dispatch(itemIncrement(productId));
+  const increaseQuantity = (productId: string, value: number) => {
+    dispatch(itemIncrement({productId, value}));
   };
 
-  const decreaseQuantity = (productId: string) => {
-    dispatch(itemDecrement(productId));
-  };
+  // const decreaseQuantity = (productId: string) => {
+  //   dispatch(itemDecrement(productId));
+  // };
 
-  useEffect(() => {
-    calculateSubtotal();
-  }, [data]);
+  // useEffect(() => {
+  //   calculateSubtotal();
+  // }, [data]);
 
   return (
     <View style={{flex: 1}}>
@@ -76,6 +76,7 @@ const Cart = () => {
             renderItem={renderItem}
             data={data}
             keyExtractor={keyExtractor}
+            // ListEmptyComponent
           />
         </View>
         <View style={styles.footer}>
