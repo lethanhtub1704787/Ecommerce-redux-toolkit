@@ -8,4 +8,14 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     // alignItems: 'center',
   },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    // backgroundColor: 'red',
+  },
+  emptyText: {
+    color: '#000000',
+    fontSize: 20,
+  },
 });

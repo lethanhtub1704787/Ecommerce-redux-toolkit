@@ -20,8 +20,11 @@ export type authState = {
 export type SignUpData = {
   email: string;
   password: string;
-  firstName: string;
+  fisrtName: string;
   lastName: string;
+  fullName: string;
+  gender: string;
+  preferredLanguage: 'vi' | 'en';
 };
 
 export type SignInData = {

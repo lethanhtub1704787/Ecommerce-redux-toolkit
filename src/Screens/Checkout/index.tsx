@@ -13,18 +13,20 @@ import React, {useState} from 'react';
 import CustomHeader from '@/Components/CustomHeader';
 import {styles} from './styles';
 import AddressCard from './AddressCard';
-import {AddressProps} from './AddressCard/types';
-
 import {example_address} from './AddressCard/model';
 import {Images} from '@/Themes/Images';
 import CustomButton from '@/Components/CustomButton';
 import {methods} from './PaymentMethodButton/methods';
 import PaymentMethodButton from './PaymentMethodButton';
 import {navigate} from '@/Navigation/NavigationAction';
+import {RouteProp, useRoute} from '@react-navigation/native';
+import {CheckoutParams} from '@/Navigation/NavigationTypes';
 
+// type routeProps = RouteProp<CheckoutParams, 'Checkout'>;
 const Checkout = () => {
+  // const route = useRoute<routeProps>();
   const default_address_id = example_address[0].id;
-  const [deliveryFee, setDeliveryFee] = useState<number>(50);
+  const [deliveryFee, setDeliveryFee] = useState<number>(0);
   const [subTotal, setSubTotal] = useState<number>(740);
   const [totalPrice, setTotalPrice] = useState<number>(deliveryFee + subTotal);
   const [currentAddress, setCurrentAddress] =
@@ -48,26 +50,26 @@ const Checkout = () => {
     setCurrentAddress(addressID);
   };
 
-  const keyExtractor = (item: AddressProps) => {
-    return 'key' + item.id;
-  };
+  // const keyExtractor = (item: AddressProps) => {
+  //   return 'key' + item.id;
+  // };
 
-  const renderAddress = ({
-    item,
-    index,
-  }: {
-    item: AddressProps;
-    index: number;
-  }) => {
-    return (
-      <AddressCard
-        key={'address' + index}
-        item={item}
-        isSelected={isSelectedAddress(item.id)}
-        onPressSelectAdress={() => handleSelectAddress(item.id)}
-      />
-    );
-  };
+  // const renderAddress = ({
+  //   item,
+  //   index,
+  // }: {
+  //   item: AddressProps;
+  //   index: number;
+  // }) => {
+  //   return (
+  //     <AddressCard
+  //       key={'address' + index}
+  //       item={item}
+  //       isSelected={isSelectedAddress(item.id)}
+  //       onPressSelectAdress={() => handleSelectAddress(item.id)}
+  //     />
+  //   );
+  // };
 
   const renderMap = () => {
     return example_address.map(item => {

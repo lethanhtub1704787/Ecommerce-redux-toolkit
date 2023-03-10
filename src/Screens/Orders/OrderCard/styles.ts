@@ -11,14 +11,12 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  quantityStyle: {
+  itemInfoContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    // backgroundColor: 'red',
-    width: 100,
+    justifyContent: 'center',
     alignItems: 'center',
+    paddingVertical: 10,
   },
-
   itemImageContainer: {
     width: 84,
     height: 90,
@@ -30,12 +28,6 @@ export const styles = StyleSheet.create({
   itemImage: {
     width: 60,
     height: 60,
-  },
-  itemInfoContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingVertical: 10,
   },
   itemInfo: {
     marginLeft: 15,
@@ -52,34 +44,14 @@ export const styles = StyleSheet.create({
     fontWeight: '400',
     width: 100,
   },
-  itemPrice: {
-    fontSize: 14,
-    fontWeight: '700',
-    color: '#000000',
-  },
-  increaseButton: {
-    backgroundColor: 'rgba(246, 121, 82, 0.15)',
-    width: 30,
-    height: 25,
+  orderStyle: {
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 10,
-  },
-  increaseButtonText: {
-    color: 'rgba(246, 121, 82, 1)',
-    fontSize: 18,
-  },
-  quantityText: {
-    color: '#000000',
-    fontSize: 16,
-    fontWeight: '600',
-    width: 30,
     // backgroundColor: 'red',
-    textAlign: 'center',
   },
-  deleteIcon: {
-    fontSize: 20,
-    color: 'red',
-    marginHorizontal: 10,
+  date: {
+    fontSize: 13,
+    color: 'rgba(0, 0, 0, 0.5)',
+    fontWeight: '400',
   },
 });

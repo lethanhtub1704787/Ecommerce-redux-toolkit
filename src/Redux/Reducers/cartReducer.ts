@@ -1,19 +1,5 @@
-import {StatusRequest} from '@/Contants';
-import {subjectLoading} from '@/Function/RxjsLoading';
-import {useAppSelector} from '@/Hooks/reduxHook';
-import {addToCartApi, deleteCartItemApi, getCartApi} from '@/Services/CartApi';
-import {
-  CartType,
-  CartState,
-  CartItem,
-  DeleteCartItem,
-  UpdateQuantity,
-  CartItemID,
-  ProductOrder,
-} from '@/Types/cartType';
+import {CartState, CartItem, UpdateQuantity} from '@/Types/cartType';
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {ProductDataState} from '../../Types/productType';
-import {RootState} from '../store';
 
 const initialState: CartState = {
   CartItems: [],

@@ -27,11 +27,12 @@ const CustomDrawer: React.FC<DrawerProps> = ({navigation}: DrawerProps) => {
   };
 
   const handleMyFavorites = () => {
-    navigate('Favorites');
+    navigate('Favourites');
   };
 
   const handleOrders = () => {
-    navigate('Orders');
+    Alert.alert('not done');
+    // navigate('Orders');
     // navigation.toggleDrawer();
   };
 
@@ -40,7 +41,7 @@ const CustomDrawer: React.FC<DrawerProps> = ({navigation}: DrawerProps) => {
       resetScreen('AuthStack');
     }
   }, [accessToken]);
-
+  console.log('full name: ', userInfo);
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.userContainer}>
@@ -56,13 +57,13 @@ const CustomDrawer: React.FC<DrawerProps> = ({navigation}: DrawerProps) => {
       </TouchableOpacity>
       <DrawerCard
         icon={Images.Heart_1x}
-        name={'My favorites'}
+        name={'My favourites'}
         onPress={handleMyFavorites}
       />
       <DrawerCard
         icon={Images.Wallet_1x}
         name={'Wallets'}
-        onPress={() => Alert.alert('nothing')}
+        onPress={() => Alert.alert('not done')}
       />
       <DrawerCard
         icon={Images.Order_1x}
@@ -72,17 +73,17 @@ const CustomDrawer: React.FC<DrawerProps> = ({navigation}: DrawerProps) => {
       <DrawerCard
         icon={Images.Document_1x}
         name={'About us'}
-        onPress={() => Alert.alert('nothing')}
+        onPress={() => Alert.alert('not done')}
       />
       <DrawerCard
         icon={Images.Lock_1x}
         name={'Privacy policy'}
-        onPress={() => Alert.alert('nothing')}
+        onPress={() => Alert.alert('not done')}
       />
       <DrawerCard
         icon={Images.Setting_1x}
         name={'Settings'}
-        onPress={() => Alert.alert('nothing')}
+        onPress={() => Alert.alert('not done')}
       />
       <TouchableOpacity
         style={[styles.drawerCard, {marginTop: 50}]}

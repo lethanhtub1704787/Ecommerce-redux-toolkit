@@ -5,6 +5,7 @@ import {CartItem} from '@/Types/cartType';
 import DeleteIcon from 'react-native-vector-icons/FontAwesome5';
 import {useDebounce} from 'use-debounce';
 import {CART_ITEM_NAME_MAX_LENGTH} from '@/Contants';
+import {fixItemName} from '@/Function/FixItemNameLength';
 type Props = {
   item: CartItem;
   onPress: () => void;
@@ -18,13 +19,6 @@ const ItemCard: React.FC<Props> = ({
   updateQuantity,
   deleteItem,
 }: Props) => {
-  // const renderOrderDate = item => {
-  //   return (
-  //     <View style={styles.orderStyle}>
-  //       <Text style={styles.date}>Today</Text>
-  //     </View>
-  //   );
-  // };
   const [quantity, setQuantity] = useState<number>(item.quantity);
   const [value] = useDebounce(quantity, 1000);
   const price = item.productOrder.defaultPrice.value;
@@ -41,13 +35,6 @@ const ItemCard: React.FC<Props> = ({
       return;
     }
     setQuantity(quantity - 1);
-  };
-
-  const fixItemName = (name: string, MaxLength: number) => {
-    if (name.length > MaxLength) {
-      return name.substring(0, MaxLength) + '...';
-    }
-    return name;
   };
 
   useEffect(() => {

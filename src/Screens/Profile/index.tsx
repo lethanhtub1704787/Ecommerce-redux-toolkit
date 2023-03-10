@@ -9,7 +9,8 @@ import {useAppSelector} from '@/Hooks/reduxHook';
 import {selectUserInfo} from '@/Redux/Reducers/authReducer';
 const Profile = () => {
   const userInfo = useAppSelector(selectUserInfo);
-  const {fullName, email, city, username, avatarImage, phone} = userInfo;
+  const {fullName, email, city, username, avatarImage, phone, gender} =
+    userInfo;
 
   return (
     <View style={{flex: 1}}>
@@ -55,12 +56,16 @@ const Profile = () => {
             <Text style={styles.personalValue}>{fullName}</Text>
           </View>
           <View style={styles.personalRow}>
+            <Text style={styles.personalText}>Gender:</Text>
+            <Text style={styles.personalValue}>{gender}</Text>
+          </View>
+          <View style={styles.personalRow}>
             <Text style={styles.personalText}>Email:</Text>
             <Text style={styles.personalValue}>{email}</Text>
           </View>
           <View style={styles.personalRow}>
             <Text style={styles.personalText}>Location:</Text>
-            <Text style={styles.personalValue}>{city}</Text>
+            <Text style={styles.personalValue}>{city ? city : null}</Text>
           </View>
           <View style={styles.personalRow}>
             <Text style={styles.personalText}>Zip Code:</Text>
@@ -69,7 +74,7 @@ const Profile = () => {
           <View style={styles.personalRow}>
             <Text style={styles.personalText}>Phone Number:</Text>
             <Text style={styles.personalValue}>
-              ({phone.countryCode}) {phone.phoneNumber}
+              {phone ? phone.countryCode + phone.phoneNumber : null}
             </Text>
           </View>
         </View>

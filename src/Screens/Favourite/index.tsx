@@ -51,12 +51,20 @@ const Favorites = () => {
       />
     );
   };
+
+  const renderEmpty = () => {
+    return (
+      <View style={styles.emptyContainer}>
+        <Text style={styles.emptyText}>No items!</Text>
+      </View>
+    );
+  };
   useEffect(() => {
     getData();
   }, [favourites]);
   return (
     <View style={{flex: 1}}>
-      <CustomHeader text="Favorite" goBack={true} />
+      <CustomHeader text="Favourite" goBack={true} />
       <View style={styles.container}>
         <FlatList
           keyExtractor={keyExtractor}
@@ -64,6 +72,8 @@ const Favorites = () => {
           data={data}
           numColumns={2}
           ItemSeparatorComponent={() => <View style={{height: 30}} />}
+          contentContainerStyle={{flexGrow: 1}}
+          ListEmptyComponent={renderEmpty}
         />
       </View>
     </View>

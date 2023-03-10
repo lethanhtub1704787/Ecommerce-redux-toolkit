@@ -1,3 +1,4 @@
+import {CartItem} from '@/Types/cartType';
 import {ProductItemType} from '@/Types/productType';
 import {NavigatorScreenParams} from '@react-navigation/native';
 
@@ -40,6 +41,6 @@ export type SearchParams = {
 };
 
 export type CheckoutParams = {
-  Checkout: undefined;
+  Checkout: {cartItems: Array<CartItem>};
   FinalCheckout: undefined;
 };

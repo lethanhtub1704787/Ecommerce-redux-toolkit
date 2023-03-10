@@ -55,9 +55,10 @@ export const authStateSlice = createSlice({
       })
       .addCase(
         signUpRequest.fulfilled,
-        (currentState: authState, {payload}: PayloadAction<{user: any}>) => {
+        (currentState: authState, {payload}: PayloadAction<UserData>) => {
           subjectLoading.next(false);
-          currentState.data = payload.user;
+          currentState.data = payload;
+          console.log('sign up succes. User: ', currentState.data);
         },
       )
       .addCase(

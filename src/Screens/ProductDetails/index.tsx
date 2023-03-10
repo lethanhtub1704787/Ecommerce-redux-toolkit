@@ -32,13 +32,10 @@ const ProductDetails = () => {
 
   const colors = useColor();
   const styles = stylesFunc(colors);
-  const favorites = useAppSelector(selectFavourites);
   const [currentColorIndex, setCurrentColorIndex] = useState<number>(0);
   const [currentSizeIndex, setCurrentSizeIndex] = useState<number>(-1);
   const [addCartDisable, setAddCartDisable] = useState<boolean>(true);
-  const [productFavourite, setProductFavorite] = useState<boolean>(
-    favorites.includes(id),
-  );
+
   const dispatch = useAppDispatch();
 
   const handleSelectColor = (colorIndex: number) => {
@@ -121,10 +118,6 @@ const ProductDetails = () => {
       />
     );
   };
-
-  useEffect(() => {
-    setProductFavorite(favorites.includes(id));
-  }, [favorites]);
 
   useEffect(() => {
     if (currentSizeIndex !== -1) {

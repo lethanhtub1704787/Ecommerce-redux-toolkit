@@ -32,9 +32,15 @@ export const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: 16,
   },
+  addressInfoContainer: {
+    // backgroundColor: 'red',
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
   addressInfo: {
-    marginRight: 120,
+    marginLeft: 30,
     height: '100%',
+    width: '40%',
     justifyContent: 'space-between',
   },
   location: {

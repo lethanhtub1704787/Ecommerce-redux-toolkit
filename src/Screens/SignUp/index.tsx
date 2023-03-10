@@ -47,8 +47,11 @@ const SignUp = ({navigation}: {navigation: any}) => {
       signUpRequest({
         email: email,
         password: password,
+        fisrtName: name,
         lastName: name,
-        firstName: name,
+        fullName: '',
+        gender: 'male',
+        preferredLanguage: 'vi',
       }),
     );
   };
