@@ -93,7 +93,7 @@ const Home = () => {
   const getData = async () => {
     await dispatch(getProductData());
     await dispatch(getCategory());
-    await dispatch(getCart(accessToken));
+    // await dispatch(getCart(accessToken));
   };
 
   useEffect(() => {

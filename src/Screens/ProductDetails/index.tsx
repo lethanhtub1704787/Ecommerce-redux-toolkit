@@ -1,61 +1,145 @@
 /* eslint-disable react-native/no-inline-styles */
-import {View, Text, Image, ScrollView} from 'react-native';
-import React, {useState} from 'react';
+import {View, Text, Image, ScrollView, FlatList} from 'react-native';
+import React, {useEffect, useState} from 'react';
 import {stylesFunc} from './styles';
 import Header from './ProductDetailsHeader';
 import {RouteProp, useRoute, useTheme} from '@react-navigation/native';
 import {HomeStackParams} from '@/Navigation/NavigationTypes';
 import {MyThemeTs} from '@/Themes/MyThemes';
 import {useColor} from '@/Hooks/useColor';
-import ChooseColorButton from './ChooseColorButton';
+import ItemColor from './ItemColor';
 import CustomButton from '@/Components/CustomButton';
 import {useAppDispatch, useAppSelector} from '@/Hooks/reduxHook';
 import {addToCart} from '@/Redux/Reducers/cartReducer';
-import {selectAccessToken} from '@/Redux/Reducers/authReducer';
-import {ProductAddToCart} from '@/Types/cartType';
+import {CartItem, ProductOrder} from '@/Types/cartType';
+import {ProductRepresent, ProductSize} from '@/Types/productType';
+import ItemSize from './ItemSize';
+import {selectFavourites} from '@/Redux/Reducers/productReducer';
 
-enum COLOR_LIST {
-  color1,
-  color2,
-  color3,
-  color4,
-}
 type routeProps = RouteProp<HomeStackParams, 'ProductDetails'>;
 const ProductDetails = () => {
+  // const data = useAppSelector(selectProductDetails);
   const route = useRoute<routeProps>();
-  const colors = useColor();
-  const {id, productRepresent, isFavorite, name, description} =
-    route.params.product;
-  const styles = stylesFunc(colors);
+  const {
+    id,
+    name,
+    description,
+    productRepresent,
+    productsVariant,
+    rate,
+    isFavorite,
+  } = route.params.product;
 
-  const [currentColor, setCurrentColor] = useState<Number>(COLOR_LIST.color1);
-  const accessToken = useAppSelector(selectAccessToken);
+  const colors = useColor();
+  const styles = stylesFunc(colors);
+  const favorites = useAppSelector(selectFavourites);
+  const [currentColorIndex, setCurrentColorIndex] = useState<number>(0);
+  const [currentSizeIndex, setCurrentSizeIndex] = useState<number>(-1);
+  const [addCartDisable, setAddCartDisable] = useState<boolean>(true);
+  const [productFavourite, setProductFavorite] = useState<boolean>(
+    favorites.includes(id),
+  );
   const dispatch = useAppDispatch();
 
-  const onChooseColor = (color: number) => {
-    setCurrentColor(color);
+  const handleSelectColor = (colorIndex: number) => {
+    setCurrentColorIndex(colorIndex);
+    setCurrentSizeIndex(-1);
   };
 
-  const isColorFocused = (color: number) => {
-    return currentColor === color;
+  const handleSelectSize = (sizeIndex: number) => {
+    // console.log('size index: ', sizeIndex);
+    setCurrentSizeIndex(sizeIndex);
+  };
+
+  const isColorFocused = (colorIndex: number) => {
+    return currentColorIndex === colorIndex;
+  };
+
+  const isSizeFocused = (sizeIndex: number) => {
+    return currentSizeIndex === sizeIndex;
   };
 
   const handleAddToCart = () => {
-    const product: ProductAddToCart = {
+    const productOrder: ProductOrder = {
+      defaultPrice: productsVariant[currentColorIndex].defaultPrice,
+      initPrice: productsVariant[currentColorIndex].initPrice,
+      colorId: productsVariant[currentColorIndex].colorId,
+      colorName: productsVariant[currentColorIndex].colorName,
+      isDiscount: productsVariant[currentColorIndex].isDiscount,
+      image: productsVariant[currentColorIndex].image,
+      size: productsVariant[currentColorIndex].sizes[currentSizeIndex],
+    };
+    const itemToAdd: CartItem = {
+      id: id + productOrder.colorId + productOrder.size.sizeId,
       productId: id,
-      sizeId: productRepresent.sizes[0].sizeId,
-      colorId: productRepresent.colorId,
+      name: name,
+      description: description,
+      productOrder: productOrder,
       quantity: 1,
     };
-    console.log('acccessToken: ', accessToken);
-    dispatch(addToCart({accessToken, product}));
+    dispatch(addToCart(itemToAdd));
   };
+
+  const keyExtractorColor = (item: ProductRepresent) => {
+    return 'key' + item.colorId;
+  };
+
+  const keyExtractorSize = (item: ProductSize) => {
+    return 'key' + item.sizeId;
+  };
+
+  const renderColorList = ({
+    item,
+    index,
+  }: {
+    item: ProductRepresent;
+    index: number;
+  }) => {
+    return (
+      <ItemColor
+        key={item.colorId + index}
+        item={item}
+        onPress={() => handleSelectColor(index)}
+        isFocused={isColorFocused(index)}
+      />
+    );
+  };
+
+  const renderSizeList = ({
+    item,
+    index,
+  }: {
+    item: ProductSize;
+    index: number;
+  }) => {
+    return (
+      <ItemSize
+        key={item.sizeId + index}
+        size={item.sizeName}
+        isFocused={isSizeFocused(index)}
+        onPress={() => handleSelectSize(index)}
+      />
+    );
+  };
+
+  useEffect(() => {
+    setProductFavorite(favorites.includes(id));
+  }, [favorites]);
+
+  useEffect(() => {
+    if (currentSizeIndex !== -1) {
+      setAddCartDisable(false);
+    } else {
+      setAddCartDisable(true);
+    }
+  }, [currentSizeIndex]);
+
   return (
     <View style={{flex: 1}}>
-      <Header isItemFavorite={isFavorite} itemId={id} />
+      <Header productID={id} />
       <View style={styles.container}>
         <Image
-          source={{uri: productRepresent.image.url}}
+          source={{uri: productsVariant[currentColorIndex].image.url}}
           style={styles.image}
         />
         <View style={styles.productInfo}>
@@ -69,7 +153,7 @@ const ProductDetails = () => {
           </View>
           <View
             style={{
-              height: 100,
+              height: 80,
             }}>
             <ScrollView
               contentContainerStyle={{
@@ -82,29 +166,28 @@ const ProductDetails = () => {
 
           <Text style={styles.textColor}>Colors</Text>
           <View style={styles.colorButtonList}>
-            <ChooseColorButton
-              color={'#000000'}
-              onPress={() => onChooseColor(COLOR_LIST.color1)}
-              isFocused={isColorFocused(COLOR_LIST.color1)}
+            <FlatList
+              data={productsVariant}
+              renderItem={renderColorList}
+              keyExtractor={keyExtractorColor}
+              horizontal={true}
             />
-            <ChooseColorButton
-              color={'#BEE8EA'}
-              onPress={() => onChooseColor(COLOR_LIST.color2)}
-              isFocused={isColorFocused(COLOR_LIST.color2)}
-            />
-            <ChooseColorButton
-              color={'#CEE3F5'}
-              onPress={() => setCurrentColor(COLOR_LIST.color3)}
-              isFocused={isColorFocused(COLOR_LIST.color3)}
-            />
-            <ChooseColorButton
-              color={'#F4E5C3'}
-              onPress={() => setCurrentColor(COLOR_LIST.color4)}
-              isFocused={isColorFocused(COLOR_LIST.color4)}
+          </View>
+          <Text style={styles.textColor}>Sizes</Text>
+          <View style={styles.colorButtonList}>
+            <FlatList
+              keyExtractor={keyExtractorSize}
+              renderItem={renderSizeList}
+              data={productsVariant[currentColorIndex].sizes}
+              horizontal={true}
             />
           </View>
           <View style={styles.center}>
-            <CustomButton text="Add to Cart" onPress={handleAddToCart} />
+            <CustomButton
+              text="Add to Cart"
+              onPress={handleAddToCart}
+              isDisable={addCartDisable}
+            />
           </View>
         </View>
       </View>

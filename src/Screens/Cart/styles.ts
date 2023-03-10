@@ -5,11 +5,21 @@ export const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 10,
     alignItems: 'center',
+    // justifyContent: 'center',
   },
   flatlist: {
     // backgroundColor: 'red',
     width: '100%',
     height: '80%',
+  },
+  emptyContainer: {
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  emptyText: {
+    color: '#000000',
+    fontSize: 20,
   },
   footer: {
     flex: 1,

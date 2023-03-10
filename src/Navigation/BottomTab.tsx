@@ -1,4 +1,5 @@
 import MyTabBar from '@/Components/CustomTabBar';
+import {BottomTabLabel} from '@/Contants';
 import Cart from '@/Screens/Cart';
 import Favorites from '@/Screens/Favorite';
 import Home from '@/Screens/Home';
@@ -30,10 +31,10 @@ const BottomTab = () => {
         headerShown: false,
       }}
       tabBar={props => <MyTabBar {...props} />}>
-      <Tab.Screen name="Home" component={Home} />
-      <Tab.Screen name="Cart" component={Cart} />
-      <Tab.Screen name="Favorites" component={Favorites} />
-      <Tab.Screen name="Profile" component={Profile} />
+      <Tab.Screen name={BottomTabLabel.HOME} component={Home} />
+      <Tab.Screen name={BottomTabLabel.CART} component={Cart} />
+      <Tab.Screen name={BottomTabLabel.FAVOURITES} component={Favorites} />
+      <Tab.Screen name={BottomTabLabel.PROFILE} component={Profile} />
     </Tab.Navigator>
   );
 };

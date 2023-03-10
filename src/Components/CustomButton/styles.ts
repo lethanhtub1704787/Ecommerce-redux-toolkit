@@ -16,4 +16,10 @@ export const styles = StyleSheet.create({
     lineHeight: 18.72,
     color: '#FFFFFF',
   },
+  disableBackground: {
+    backgroundColor: '#EBEBEB',
+  },
+  textDisable: {
+    color: '#C7C7C7',
+  },
 });

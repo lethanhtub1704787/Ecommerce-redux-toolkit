@@ -6,7 +6,7 @@ import {
   Alert,
   TouchableOpacity,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {styles} from './styles';
 import CustomHeader from '@/Components/CustomHeader';
 import ProductItems from '@/Components/ProductItems';
@@ -14,19 +14,24 @@ import ProductItems from '@/Components/ProductItems';
 import {pushScreen} from '@/Navigation/NavigationAction';
 import {ProductItemType} from '@/Types/productType';
 import {useAppDispatch, useAppSelector} from '@/Hooks/reduxHook';
-import {selectProduct} from '@/Redux/Reducers/productReducer';
-import {testIncrement} from '@/Redux/Reducers/cartReducer';
+import {selectFavourites, selectProduct} from '@/Redux/Reducers/productReducer';
 
 const Favorites = () => {
-  const value = useAppSelector(state => state.cartState.testValue);
-  const dispatch = useAppDispatch();
-
+  const favourites = useAppSelector(selectFavourites);
   const productItems = useAppSelector(selectProduct);
-  const [productData, setProductData] = useState<Array<ProductItemType>>(
-    productItems.filter(
-      (item: {isFavorite: boolean}) => item.isFavorite === true,
-    ),
-  );
+  const [data, setData] = useState<Array<ProductItemType>>();
+  const getData = () => {
+    const favouritesData = productItems.filter((item: ProductItemType) =>
+      favourites.includes(item.id),
+    );
+    setData(favouritesData);
+  };
+
+  // const [productData, setProductData] = useState<Array<ProductItemType>>(
+  //   productItems.filter(
+  //     (item: {isFavorite: boolean}) => item.isFavorite === true,
+  //   ),
+  // );
   const keyExtractor = (item: ProductItemType) => {
     return 'key' + item.id;
   };
@@ -46,27 +51,20 @@ const Favorites = () => {
       />
     );
   };
-
-  const increment = () => {
-    dispatch(testIncrement());
-  };
+  useEffect(() => {
+    getData();
+  }, [favourites]);
   return (
     <View style={{flex: 1}}>
       <CustomHeader text="Favorite" goBack={true} />
       <View style={styles.container}>
-        <TouchableOpacity
-          style={{backgroundColor: 'blue', height: 30, width: 100}}
-          onPress={increment}>
-          <Text style={{fontSize: 30}}>Button</Text>
-        </TouchableOpacity>
-        <Text style={{color: '#000000', fontSize: 20}}>{value}</Text>
-        {/* <FlatList
+        <FlatList
           keyExtractor={keyExtractor}
           renderItem={renderItem}
-          data={productData}
+          data={data}
           numColumns={2}
           ItemSeparatorComponent={() => <View style={{height: 30}} />}
-        /> */}
+        />
       </View>
     </View>
   );

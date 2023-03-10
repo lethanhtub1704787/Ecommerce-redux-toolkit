@@ -7,11 +7,13 @@ export enum MENU_NAME {
   settings,
 }
 
-export enum PRODUCT_CATEGORY {
-  dress,
-  shirt,
-  pants,
-  tshirt,
+export const CART_ITEM_NAME_MAX_LENGTH: number = 30;
+
+export enum BottomTabLabel {
+  HOME = 'Home',
+  CART = 'Cart',
+  FAVOURITES = 'Favourites',
+  PROFILE = 'Profile',
 }
 
 export enum StatusRequest {
@@ -26,12 +28,6 @@ export enum StatusLoading {
   SUCCEEDED = 'succeeded',
   FAILED = 'failed',
   NONE = 'none',
-}
-
-export enum StorageKey {
-  userInfo = 'userInfo',
-  accessToken = 'accessToken',
-  refreshToken = 'refreshToken',
 }
 
 export enum Statistics {

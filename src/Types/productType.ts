@@ -24,7 +24,6 @@ export type ProductPrice = {
 };
 
 export type ProductRepresent = {
-  id: string;
   colorId: string;
   colorName: string;
   value: string;
@@ -42,7 +41,6 @@ export type ProductItemType = {
   description: string;
   isDisplay: boolean;
   categoryIds: Array<string>;
-  images: Array<string>;
   type: string;
   createAt: number;
   productRepresent: ProductRepresent;
@@ -55,7 +53,7 @@ export type ProductItemType = {
 };
 
 export type ProductDataState = {
-  nextToken: string;
   items: Array<ProductItemType>;
   category: Array<Category>;
+  favourites: Array<string>;
 };

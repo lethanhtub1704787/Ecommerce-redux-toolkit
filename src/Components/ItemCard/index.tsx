@@ -1,28 +1,21 @@
 import {View, Text, Image, TouchableOpacity} from 'react-native';
 import React, {memo, useEffect, useState} from 'react';
 import {styles} from './styles';
-import {Images} from '@/Themes/Images';
-import {ProductItemType} from '@/Types/productType';
 import {CartItem} from '@/Types/cartType';
-import {useAppDispatch} from '@/Hooks/reduxHook';
-import {itemIncrement} from '@/Redux/Reducers/cartReducer';
 import DeleteIcon from 'react-native-vector-icons/FontAwesome5';
 import {useDebounce} from 'use-debounce';
+import {CART_ITEM_NAME_MAX_LENGTH} from '@/Contants';
 type Props = {
   item: CartItem;
-  cardType: 'cart' | 'order';
   onPress: () => void;
-  increaseQuantity: (productId: string, value: number) => void;
-  decreaseQuantity: () => void;
+  updateQuantity: (cartItemID: string, value: number) => void;
   deleteItem: () => void;
 };
 
 const ItemCard: React.FC<Props> = ({
   item,
-  cardType,
   onPress,
-  increaseQuantity,
-  decreaseQuantity,
+  updateQuantity,
   deleteItem,
 }: Props) => {
   // const renderOrderDate = item => {
@@ -37,14 +30,32 @@ const ItemCard: React.FC<Props> = ({
   const price = item.productOrder.defaultPrice.value;
   const currency = item.productOrder.defaultPrice.currency;
 
-  console.log('re-render item card', item.quantity);
+  // console.log('re-render item card', item.quantity);
 
-  const updateQuantity = () => {
+  const increaseQuantity = () => {
     setQuantity(quantity + 1);
   };
 
+  const decreaseQuantity = () => {
+    if (quantity === 1) {
+      return;
+    }
+    setQuantity(quantity - 1);
+  };
+
+  const fixItemName = (name: string, MaxLength: number) => {
+    if (name.length > MaxLength) {
+      return name.substring(0, MaxLength) + '...';
+    }
+    return name;
+  };
+
   useEffect(() => {
-    increaseQuantity(item.productId, value);
+    setQuantity(item.quantity);
+  }, [item.quantity]);
+
+  useEffect(() => {
+    updateQuantity(item.id, value);
   }, [value]);
 
   return (
@@ -61,7 +72,19 @@ const ItemCard: React.FC<Props> = ({
             style={styles.itemName}
             numberOfLines={2}
             adjustsFontSizeToFit={true}>
-            {item.name}
+            {fixItemName(item.name, CART_ITEM_NAME_MAX_LENGTH)}
+          </Text>
+          <Text
+            style={styles.colorText}
+            numberOfLines={2}
+            adjustsFontSizeToFit={true}>
+            Color: {item.productOrder.colorName}
+          </Text>
+          <Text
+            style={styles.colorText}
+            numberOfLines={2}
+            adjustsFontSizeToFit={true}>
+            Size: {item.productOrder.size.sizeName}
           </Text>
           <Text style={styles.itemPrice}>
             {new Intl.NumberFormat().format(price) + ' ' + currency}
@@ -72,7 +95,7 @@ const ItemCard: React.FC<Props> = ({
       <View style={styles.quantityStyle}>
         <TouchableOpacity
           style={styles.increaseButton}
-          onPress={updateQuantity}>
+          onPress={increaseQuantity}>
           <Text style={styles.increaseButtonText}>+</Text>
         </TouchableOpacity>
 

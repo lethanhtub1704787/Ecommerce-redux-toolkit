@@ -9,12 +9,65 @@ import Cart from 'react-native-vector-icons/Ionicons';
 import Favorites from 'react-native-vector-icons/AntDesign';
 import Profile from 'react-native-vector-icons/FontAwesome';
 import {useAppSelector} from '@/Hooks/reduxHook';
-import {selectCart, selectCartItems} from '@/Redux/Reducers/cartReducer';
-import {CartItem, CartType} from '@/Types/cartType';
+import {selectCart} from '@/Redux/Reducers/cartReducer';
+import {BottomTabLabel} from '@/Contants';
 
 function MyTabBar({state, descriptors, navigation}: BottomTabBarProps) {
   // const cartItems: CartType = useAppSelector(selectCart);
-  const cartItems = useAppSelector(selectCartItems);
+  const cartItems = useAppSelector(selectCart);
+  const renderIcon = (label: any, isFocused: boolean) => {
+    switch (label) {
+      case BottomTabLabel.HOME:
+        return (
+          <View style={styles.tabBarIcon}>
+            <Home
+              name={isFocused ? 'home' : 'home-outline'}
+              style={[
+                styles.iconStyle,
+                {color: isFocused ? '#F67952' : '#000000'},
+              ]}
+            />
+          </View>
+        );
+      case BottomTabLabel.CART:
+        return (
+          <View style={styles.tabBarIcon}>
+            <Cart
+              name={isFocused ? 'cart' : 'cart-outline'}
+              style={[
+                styles.iconStyle,
+                {color: isFocused ? '#F67952' : '#000000'},
+              ]}
+            />
+            {cartItems?.length > 0 && (
+              <View style={styles.tabBarBadge}>
+                <Text style={styles.badgeText}>{cartItems?.length}</Text>
+              </View>
+            )}
+          </View>
+        );
+      case BottomTabLabel.FAVOURITES:
+        return (
+          <Favorites
+            name={isFocused ? 'heart' : 'hearto'}
+            style={[
+              styles.iconStyle,
+              {color: isFocused ? '#F67952' : '#000000'},
+            ]}
+          />
+        );
+      case BottomTabLabel.PROFILE:
+        return (
+          <Profile
+            name={isFocused ? 'user' : 'user-o'}
+            style={[
+              styles.iconStyle,
+              {color: isFocused ? '#F67952' : '#000000'},
+            ]}
+          />
+        );
+    }
+  };
 
   if (state.index === 0) {
     return (
@@ -61,46 +114,7 @@ function MyTabBar({state, descriptors, navigation}: BottomTabBarProps) {
               activeOpacity={1}
               style={styles.tabBarButton}>
               {/* <Text style={{color: isFocused ? '#673ab7' : '#222'}}>{label}</Text> */}
-              {label === 'Home' ? (
-                <View style={styles.tabBarIcon}>
-                  <Home
-                    name={isFocused ? 'home' : 'home-outline'}
-                    style={[
-                      styles.iconStyle,
-                      {color: isFocused ? '#F67952' : '#000000'},
-                    ]}
-                  />
-                </View>
-              ) : label === 'Cart' ? (
-                <View style={styles.tabBarIcon}>
-                  <Cart
-                    name={isFocused ? 'cart' : 'cart-outline'}
-                    style={[
-                      styles.iconStyle,
-                      {color: isFocused ? '#F67952' : '#000000'},
-                    ]}
-                  />
-                  <View style={styles.tabBarBadge}>
-                    <Text style={styles.badgeText}>{cartItems?.length}</Text>
-                  </View>
-                </View>
-              ) : label === 'Favorites' ? (
-                <Favorites
-                  name={isFocused ? 'heart' : 'hearto'}
-                  style={[
-                    styles.iconStyle,
-                    {color: isFocused ? '#F67952' : '#000000'},
-                  ]}
-                />
-              ) : label === 'Profile' ? (
-                <Profile
-                  name={isFocused ? 'user' : 'user-o'}
-                  style={[
-                    styles.iconStyle,
-                    {color: isFocused ? '#F67952' : '#000000'},
-                  ]}
-                />
-              ) : null}
+              {renderIcon(label, isFocused)}
             </TouchableOpacity>
           );
         })}

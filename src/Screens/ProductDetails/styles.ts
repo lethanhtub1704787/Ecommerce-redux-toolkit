@@ -14,7 +14,7 @@ export const stylesFunc = (color: ColorTs) =>
     image: {
       // backgroundColor: 'red',
       width: 270,
-      height: 360,
+      height: 340,
       marginBottom: 20,
       borderRadius: 20,
     },
@@ -24,11 +24,12 @@ export const stylesFunc = (color: ColorTs) =>
       backgroundColor: '#FFFFFF',
       flex: 1,
       width: windowWidth,
-      height: 350,
+      height: 400,
       borderTopLeftRadius: 40,
       borderTopRightRadius: 40,
       justifyContent: 'space-between',
-      padding: 20,
+      paddingHorizontal: 20,
+      paddingVertical: 10,
     },
     nameAndPrice: {
       // flexDirection: 'row',
@@ -58,6 +59,8 @@ export const stylesFunc = (color: ColorTs) =>
     },
     colorButtonList: {
       flexDirection: 'row',
+      height: 36,
+      alignItems: 'center',
     },
     center: {
       alignItems: 'center',

@@ -7,7 +7,7 @@ export const styles = StyleSheet.create({
     backgroundColor: 'rgba(255, 250, 247, 0.56);',
     // backgroundColor: 'red',
     borderRadius: 15,
-    marginHorizontal: 15,
+    marginHorizontal: 10,
     // flex: 1,
   },
   center: {

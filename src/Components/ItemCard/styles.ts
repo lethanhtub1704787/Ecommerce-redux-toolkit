@@ -30,7 +30,7 @@ export const styles = StyleSheet.create({
   },
   itemImageContainer: {
     width: 84,
-    height: 80,
+    height: 90,
     backgroundColor: 'rgba(62, 66, 41, 0.1)',
     justifyContent: 'center',
     alignItems: 'center',
@@ -44,6 +44,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    paddingVertical: 10,
   },
   itemInfo: {
     marginLeft: 15,
@@ -53,7 +54,12 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '400',
     color: '#000000',
-    marginBottom: 10,
+  },
+  colorText: {
+    fontSize: 14,
+    color: '#A8A8A8',
+    fontWeight: '400',
+    width: 100,
   },
   itemPrice: {
     fontSize: 14,

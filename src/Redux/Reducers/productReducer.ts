@@ -6,15 +6,30 @@ import {ProductDataState} from '@/Types/productType';
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 
 const initialState: ProductDataState = {
-  nextToken: '',
   items: [],
   category: [],
+  favourites: [],
 };
 
 export const productStateSlice = createSlice({
   name: 'productState',
   initialState,
-  reducers: {},
+  reducers: {
+    productFavourite: (
+      state: ProductDataState,
+      action: PayloadAction<string>,
+    ) => {
+      const productID = action.payload;
+      if (state.favourites.includes(productID)) {
+        const newFavourite = state.favourites.filter(
+          item => item !== productID,
+        );
+        state.favourites = newFavourite;
+      } else {
+        state.favourites.push(productID);
+      }
+    },
+  },
   extraReducers(builder: any) {
     builder
       /** GET PRODUCT */
@@ -27,8 +42,15 @@ export const productStateSlice = createSlice({
           currentState: ProductDataState,
           {payload}: PayloadAction<ProductDataState>,
         ) => {
-          currentState.nextToken = payload.nextToken;
           currentState.items = payload.items;
+          console.log(
+            'product represent: ',
+            currentState.items[0].productRepresent,
+          );
+          console.log(
+            'product variants: ',
+            currentState.items[0].productsVariant,
+          );
           // subjectLoading.next(false);
         },
       )
@@ -74,7 +96,7 @@ export const getCategory = createAsyncThunk('/category', async () => {
 
 export const selectProduct = (state: any) => state.productState.items;
 export const selectCategory = (state: any) => state.productState.category;
-
-export const {} = productStateSlice.actions;
+export const selectFavourites = (state: any) => state.productState.favourites;
+export const {productFavourite} = productStateSlice.actions;
 
 export default productStateSlice.reducer;

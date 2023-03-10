@@ -5,24 +5,6 @@ import {
   ProductSize,
 } from './productType';
 
-export type DeliveryType = {
-  addressId: string;
-  fee: number | null;
-  shippingUnit: string;
-};
-
-export type PromotionsType = {
-  id: string;
-  typePromotion: string;
-  price: number | null;
-  code: string;
-  status: string;
-  subjectUse: string;
-  dateExpired: string;
-  quantity: number;
-  name: string;
-};
-
 export type ProductOrder = {
   defaultPrice: ProductPrice;
   initPrice: ProductPrice;
@@ -42,32 +24,19 @@ export type CartItem = {
   quantity: number;
 };
 
-export type CartType = {
-  id: string;
-  totalPrice: ProductPrice;
-  discountPrice: ProductPrice;
-  delivery: DeliveryType;
-  products: Array<CartItem>;
-  totalPriceAfterApplyPromotion: ProductPrice;
-  promotions: PromotionsType[];
-  totalPriceFinally: ProductPrice;
-};
-
-export type ProductAddToCart = {
-  productId: string;
-  sizeId: string;
-  colorId: string;
-  quantity: number;
-};
-
 export type CartState = {
-  cart: CartType;
-  items: Array<CartItem>;
+  CartItems: Array<CartItem>;
 };
 
 export type UpdateQuantity = {
-  productId: string;
+  cartItemID: string;
   value: number;
+};
+
+export type CartItemID = {
+  productItem: ProductItemType;
+  colorId: string;
+  sizeId: string;
 };
 
 export type DeleteCartItem = {

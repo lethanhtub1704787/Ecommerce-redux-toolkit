@@ -54,7 +54,7 @@ const SearchScreen = () => {
     return (
       <ProductItems
         key={'product' + item.id + index}
-        favoriteShow
+        favoriteShow={false}
         item={item}
         onPress={() => pushScreen('ProductDetails', {product: item})}
       />

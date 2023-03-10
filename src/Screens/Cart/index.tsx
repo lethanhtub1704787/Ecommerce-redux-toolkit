@@ -4,23 +4,22 @@ import {styles} from './styles';
 import CustomHeader from '@/Components/CustomHeader';
 import CustomButton from '@/Components/CustomButton';
 import ItemCard from '../../Components/ItemCard';
-import {navigate} from '@/Navigation/NavigationAction';
 import {useAppDispatch, useAppSelector} from '@/Hooks/reduxHook';
 import {
-  itemIncrement,
-  setCartDefault,
-  selectCartItems,
-  itemDecrement,
-  deleteCartItem,
+  updateQuantity,
+  selectCart,
+  deleteItem,
 } from '@/Redux/Reducers/cartReducer';
 import {CartItem} from '@/Types/cartType';
+import {navigate} from '@/Navigation/NavigationAction';
+import AlertModal from '@/Components/AlertModal';
 
 const Cart = () => {
-  const data = useAppSelector(selectCartItems);
+  const data = useAppSelector(selectCart);
   const dispatch = useAppDispatch();
-  // const [data, setData] = useState<Array<CartItem>>(cart.products);
   const [subTotal, setSubTotal] = useState<number>(0);
-
+  const [deleteVisible, setDeleteVisible] = useState<boolean>(false);
+  const [idToDelete, setIdToDelete] = useState<string>('');
   const keyExtractor = (item: CartItem) => {
     return 'key' + item.id;
   };
@@ -28,12 +27,10 @@ const Cart = () => {
     return (
       <ItemCard
         key={index + item.id}
-        cardType="cart"
         item={item}
-        onPress={() => Alert.alert(item.productId)}
-        increaseQuantity={increaseQuantity}
-        decreaseQuantity={() => decreaseQuantity(item.productId)}
-        deleteItem={() => handleDeleteItem(item.productId)}
+        onPress={() => Alert.alert(item.id)}
+        updateQuantity={updateQuantityState}
+        deleteItem={() => handleDeleteItem(item.id)}
       />
     );
   };
@@ -47,35 +44,58 @@ const Cart = () => {
   };
 
   const handleCheckout = () => {
-    dispatch(setCartDefault());
-    // navigate('CheckoutStack');
+    navigate('CheckoutStack');
   };
 
-  const handleDeleteItem = (productId: string) => {
-    dispatch(deleteCartItem(productId));
+  const handleDeleteItem = (cartItemID: string) => {
+    setIdToDelete(cartItemID);
+    setDeleteVisible(true);
   };
 
-  const increaseQuantity = (productId: string, value: number) => {
-    dispatch(itemIncrement({productId, value}));
+  const dispatchDeleteItem = (cartItemID: string) => {
+    dispatch(deleteItem(cartItemID));
+    setDeleteVisible(false);
   };
 
-  // const decreaseQuantity = (productId: string) => {
-  //   dispatch(itemDecrement(productId));
-  // };
+  const updateQuantityState = (cartItemID: string, value: number) => {
+    dispatch(updateQuantity({cartItemID: cartItemID, value}));
+  };
 
-  // useEffect(() => {
-  //   calculateSubtotal();
-  // }, [data]);
+  const readyCheckout = () => {
+    return data.length > 0;
+  };
+
+  const renderEmpty = () => {
+    return (
+      <View style={styles.emptyContainer}>
+        <Text style={styles.emptyText}>No items!</Text>
+      </View>
+    );
+  };
+
+  useEffect(() => {
+    calculateSubtotal();
+  }, [data]);
 
   return (
     <View style={{flex: 1}}>
+      <AlertModal
+        alertText={'Delete this item?'}
+        isVisible={deleteVisible}
+        onClose={() => setDeleteVisible(false)}
+        onNo={() => setDeleteVisible(false)}
+        onYes={dispatchDeleteItem}
+        itemID={idToDelete}
+      />
       <CustomHeader text={'My Cart'} goBack={true} />
       <View style={styles.container}>
         <View style={styles.flatlist}>
           <FlatList
+            contentContainerStyle={{flexGrow: 1}}
             renderItem={renderItem}
             data={data}
             keyExtractor={keyExtractor}
+            ListEmptyComponent={renderEmpty}
             // ListEmptyComponent
           />
         </View>
@@ -87,7 +107,11 @@ const Cart = () => {
             </Text>
           </View>
           <View style={styles.checkoutButton}>
-            <CustomButton text="Checkout" onPress={handleCheckout} />
+            <CustomButton
+              text="Checkout"
+              onPress={handleCheckout}
+              isDisable={!readyCheckout()}
+            />
           </View>
         </View>
       </View>

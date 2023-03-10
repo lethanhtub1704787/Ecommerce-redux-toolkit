@@ -18,7 +18,7 @@ export type AuthStackParams = {
 export type BottomTabParams = {
   Home: undefined;
   Cart: undefined;
-  Favorites: undefined;
+  Favourites: undefined;
   Profile: undefined;
 };
 

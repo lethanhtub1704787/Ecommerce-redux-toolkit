@@ -24,10 +24,7 @@ const ProductItems: React.FC<Props> = ({
         />
         {favoriteShow && (
           <View style={styles.favoriteButton}>
-            <Favorite
-              name={item.isFavorite ? 'heart' : 'hearto'}
-              style={styles.favoriteIcon}
-            />
+            <Favorite name={'heart'} style={styles.favoriteIcon} />
           </View>
         )}
       </View>
