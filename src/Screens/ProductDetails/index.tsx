@@ -15,6 +15,7 @@ import {CartItem, ProductOrder} from '@/Types/cartType';
 import {ProductRepresent, ProductSize} from '@/Types/productType';
 import ItemSize from './ItemSize';
 import {selectFavourites} from '@/Redux/Reducers/productReducer';
+import {notifyMessage} from '@/Function/notifyMessage';
 
 type routeProps = RouteProp<HomeStackParams, 'ProductDetails'>;
 const ProductDetails = () => {
@@ -75,6 +76,7 @@ const ProductDetails = () => {
       quantity: 1,
     };
     dispatch(addToCart(itemToAdd));
+    notifyMessage('Added to cart');
   };
 
   const keyExtractorColor = (item: ProductRepresent) => {

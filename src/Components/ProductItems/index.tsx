@@ -15,6 +15,9 @@ const ProductItems: React.FC<Props> = ({
   favoriteShow,
   onPress,
 }: Props) => {
+  const price = item.productRepresent.defaultPrice.value;
+  const currency = item.productRepresent.defaultPrice.currency;
+
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
       <View style={styles.imageBox}>
@@ -31,9 +34,7 @@ const ProductItems: React.FC<Props> = ({
       <View style={styles.center}>
         <Text style={styles.productName}>{item.name}</Text>
         <Text style={styles.productPrice}>
-          {item.productRepresent.defaultPrice.value +
-            ' ' +
-            item.productRepresent.defaultPrice.currency}
+          {new Intl.NumberFormat().format(price) + ' ' + currency}
         </Text>
       </View>
     </TouchableOpacity>

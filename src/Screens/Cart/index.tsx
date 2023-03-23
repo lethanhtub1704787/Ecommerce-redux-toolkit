@@ -13,6 +13,7 @@ import {
 import {CartItem} from '@/Types/cartType';
 import {navigate} from '@/Navigation/NavigationAction';
 import AlertModal from '@/Components/AlertModal';
+import {notifyMessage} from '@/Function/notifyMessage';
 
 const Cart = () => {
   const data = useAppSelector(selectCart);
@@ -53,8 +54,11 @@ const Cart = () => {
   };
 
   const dispatchDeleteItem = (cartItemID: string) => {
-    dispatch(deleteItem(cartItemID));
     setDeleteVisible(false);
+    setTimeout(() => {
+      dispatch(deleteItem(cartItemID));
+    }, 200);
+    notifyMessage('Deleted item');
   };
 
   const updateQuantityState = (cartItemID: string, value: number) => {

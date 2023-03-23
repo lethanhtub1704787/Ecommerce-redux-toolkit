@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {View, TouchableOpacity} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {styles} from './styles';
@@ -9,21 +10,39 @@ import {
   productFavourite,
   selectFavourites,
 } from '@/Redux/Reducers/productReducer';
+import {useDebounce} from 'use-debounce';
+import {notifyMessage} from '@/Function/notifyMessage';
 
 type DetailHeader = {
   productID: string;
 };
 
 const Header: React.FC<DetailHeader> = ({productID}: DetailHeader) => {
-  const [isFavourite, setIsFavourite] = useState<boolean>();
   const favourites = useAppSelector(selectFavourites);
+  const [isFavourite, setIsFavourite] = useState<boolean>();
+  const [favoriteStatus, setFavoriteStatus] = useState<boolean>();
+  const [favoriteValue] = useDebounce(favoriteStatus, 300);
+
   const dispatch = useAppDispatch();
   const onFavourite = () => {
-    dispatch(productFavourite(productID));
+    setIsFavourite(!isFavourite);
+    setFavoriteStatus(!isFavourite);
   };
   useEffect(() => {
+    if (favoriteStatus !== undefined) {
+      if (favoriteStatus === true) {
+        notifyMessage('You liked this item');
+      } else {
+        notifyMessage('You unliked this item');
+      }
+      console.log('favorite status: ', favoriteStatus);
+      dispatch(productFavourite(productID));
+    }
+  }, [favoriteValue]);
+
+  useEffect(() => {
     setIsFavourite(favourites.includes(productID));
-  }, [favourites]);
+  }, []);
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={() => onGoBack()}>

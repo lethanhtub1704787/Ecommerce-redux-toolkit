@@ -4,6 +4,7 @@ import {getCategoryApi, getProductApi} from '@/Services/ProductApi';
 import {CategoryState} from '@/Types/categoryType';
 import {ProductDataState} from '@/Types/productType';
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {RootState} from '../store';
 
 const initialState: ProductDataState = {
   items: [],
@@ -43,14 +44,7 @@ export const productStateSlice = createSlice({
           {payload}: PayloadAction<ProductDataState>,
         ) => {
           currentState.items = payload.items;
-          console.log(
-            'product represent: ',
-            currentState.items[0].productRepresent,
-          );
-          console.log(
-            'product variants: ',
-            currentState.items[0].productsVariant,
-          );
+          console.log('payload: ', payload);
           // subjectLoading.next(false);
         },
       )
@@ -76,23 +70,37 @@ export const productStateSlice = createSlice({
   },
 });
 
-export const getProductData = createAsyncThunk('/product', async () => {
-  const response: any = await getProductApi();
-  console.log('responde', response);
-  const {data, ok, status} = response;
-  if (ok && status === StatusRequest.GET) {
-    return data;
-  }
-});
+export const getProductData = createAsyncThunk(
+  '/product',
+  async (_, {getState, rejectWithValue}) => {
+    const state = getState() as RootState;
+    const response: any = await getProductApi(state.authState.data.accessToken);
+    console.log('responde', response);
+    const {data, ok, status} = response;
+    if (ok && status === StatusRequest.GET) {
+      return data;
+    } else {
+      return rejectWithValue(data);
+    }
+  },
+);
 
-export const getCategory = createAsyncThunk('/category', async () => {
-  const response: any = await getCategoryApi();
-  console.log('responde', response);
-  const {data, ok, status} = response;
-  if (ok && status === StatusRequest.GET) {
-    return data;
-  }
-});
+export const getCategory = createAsyncThunk(
+  '/category',
+  async (_, {getState, rejectWithValue}) => {
+    const state = getState() as RootState;
+    const response: any = await getCategoryApi(
+      state.authState.data.accessToken,
+    );
+    console.log('responde', response);
+    const {data, ok, status} = response;
+    if (ok && status === StatusRequest.GET) {
+      return data;
+    } else {
+      return rejectWithValue(data);
+    }
+  },
+);
 
 export const selectProduct = (state: any) => state.productState.items;
 export const selectCategory = (state: any) => state.productState.category;
