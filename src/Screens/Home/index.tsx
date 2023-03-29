@@ -26,13 +26,11 @@ import {
 } from '@/Redux/Reducers/productReducer';
 import {Category} from '@/Types/categoryType';
 import {ProductItemType} from '@/Types/productType';
-import {selectAccessToken} from '@/Redux/Reducers/authReducer';
-import {getCart} from '@/Redux/Reducers/cartReducer';
 
 const Home = () => {
   const productItems = useAppSelector(selectProduct);
   const category = useAppSelector(selectCategory);
-  const accessToken = useAppSelector(selectAccessToken);
+
   const dispatch = useAppDispatch();
   const [filterVisible, setFilterVisible] = useState<boolean>(false);
   const [currentCategoryFocus, setCurrentCategoryFocus] = useState<String>('');
