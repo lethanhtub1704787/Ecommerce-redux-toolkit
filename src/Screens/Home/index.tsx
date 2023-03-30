@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   FlatList,
   Alert,
+  ScrollView,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {styles} from './styles';
@@ -28,15 +29,34 @@ import {Category} from '@/Types/categoryType';
 import {ProductItemType} from '@/Types/productType';
 
 const Home = () => {
-  const productItems = useAppSelector(selectProduct);
-  const category = useAppSelector(selectCategory);
+  const productItems: Array<ProductItemType> = useAppSelector(selectProduct);
+  const category: Array<Category> = useAppSelector(selectCategory);
 
   const dispatch = useAppDispatch();
   const [filterVisible, setFilterVisible] = useState<boolean>(false);
-  const [currentCategoryFocus, setCurrentCategoryFocus] = useState<String>('');
+  const [currentCategoryFocus, setCurrentCategoryFocus] = useState<String>();
 
   const [productData, setProductData] =
     useState<Array<ProductItemType>>(productItems);
+
+  const handleSeeAll = () => {
+    let categoryID: String;
+    let categoryName: String | undefined;
+    if (currentCategoryFocus) {
+      const categorySelected = category.find(
+        item => item.id === currentCategoryFocus,
+      );
+      categoryID = currentCategoryFocus;
+      categoryName = categorySelected?.name;
+    } else {
+      categoryID = 'random';
+      categoryName = 'All product';
+    }
+    navigate('SeeAllProduct', {
+      categoryID: categoryID,
+      categoryName: categoryName,
+    });
+  };
 
   const handleCategory = (categoryId: string) => {
     setCurrentCategoryFocus(categoryId);
@@ -44,7 +64,9 @@ const Home = () => {
       const categoryIds = item.categoryIds;
       return categoryIds.includes(categoryId);
     });
-    setProductData(data.slice(0, 5));
+    setTimeout(() => {
+      setProductData(data.slice(0, 5));
+    }, 0);
   };
 
   const isCategoryFocus = (categoryId: string) => {
@@ -114,19 +136,21 @@ const Home = () => {
         isVisible={filterVisible}
         onClose={() => setFilterVisible(false)}
       />
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
         <Text style={styles.explore}>Explore</Text>
         <Text style={styles.bestOutfit}>best Outfits for you</Text>
         <View style={styles.filterContainer}>
-          <Search name="search1" style={styles.searchIcon} />
-          <TouchableOpacity
-            style={styles.searchInput}
-            onPress={() => {
-              navigate('Search');
-            }}
-            activeOpacity={1}>
-            <Text style={{color: 'rgba(0, 0, 0, 0.9)'}}>Search items...</Text>
-          </TouchableOpacity>
+          <View style={styles.searchContainer}>
+            <Search name="search1" style={styles.searchIcon} />
+            <TouchableOpacity
+              style={styles.searchInput}
+              onPress={() => {
+                navigate('Search');
+              }}
+              activeOpacity={1}>
+              <Text style={{color: 'rgba(0, 0, 0, 0.9)'}}>Search items...</Text>
+            </TouchableOpacity>
+          </View>
           <TouchableOpacity
             style={styles.filterButton}
             onPress={() => setFilterVisible(!filterVisible)}>
@@ -143,7 +167,7 @@ const Home = () => {
         </View>
         <View style={styles.arrivalContainer}>
           <Text style={styles.textArrival}>New Arrival</Text>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={handleSeeAll}>
             <Text style={styles.textSeeAll}>See All</Text>
           </TouchableOpacity>
         </View>
@@ -154,7 +178,7 @@ const Home = () => {
             horizontal
           />
         </View>
-      </View>
+      </ScrollView>
     </View>
   );
 };

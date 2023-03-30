@@ -31,8 +31,8 @@ const CustomDrawer: React.FC<DrawerProps> = ({navigation}: DrawerProps) => {
   };
 
   const handleOrders = () => {
-    Alert.alert('not done');
-    // navigate('Orders');
+    // Alert.alert('not done');
+    navigate('Orders');
     // navigation.toggleDrawer();
   };
 

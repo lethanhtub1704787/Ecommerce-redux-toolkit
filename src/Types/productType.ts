@@ -56,4 +56,5 @@ export type ProductDataState = {
   items: Array<ProductItemType>;
   category: Array<Category>;
   favourites: Array<string>;
+  productByCategory: Array<ProductItemType>;
 };

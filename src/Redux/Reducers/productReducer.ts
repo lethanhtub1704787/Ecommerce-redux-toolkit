@@ -1,4 +1,5 @@
 import {StatusRequest} from '@/Contants';
+import {subjectLoading} from '@/Function/RxjsLoading';
 // import {subjectLoading} from '@/Function/RxjsLoading';
 import {getCategoryApi, getProductApi} from '@/Services/ProductApi';
 import {CategoryState} from '@/Types/categoryType';
@@ -10,6 +11,7 @@ const initialState: ProductDataState = {
   items: [],
   category: [],
   favourites: [],
+  productByCategory: [],
 };
 
 export const productStateSlice = createSlice({
@@ -30,6 +32,20 @@ export const productStateSlice = createSlice({
         state.favourites.push(productID);
       }
     },
+    getProductByCategory: (
+      state: ProductDataState,
+      action: PayloadAction<string>,
+    ) => {
+      const categoryID = action.payload;
+      const data = state.items.filter((item: {categoryIds: Array<string>}) => {
+        const categoryIds = item.categoryIds;
+        return categoryIds.includes(categoryID);
+      });
+      state.productByCategory = data;
+    },
+    clearSeeAllData: (state: ProductDataState) => {
+      state.productByCategory = [];
+    },
   },
   extraReducers(builder: any) {
     builder
@@ -44,8 +60,6 @@ export const productStateSlice = createSlice({
           {payload}: PayloadAction<ProductDataState>,
         ) => {
           currentState.items = payload.items;
-          console.log('payload: ', payload);
-          // subjectLoading.next(false);
         },
       )
       .addCase(getProductData.rejected, () => {
@@ -105,6 +119,9 @@ export const getCategory = createAsyncThunk(
 export const selectProduct = (state: any) => state.productState.items;
 export const selectCategory = (state: any) => state.productState.category;
 export const selectFavourites = (state: any) => state.productState.favourites;
-export const {productFavourite} = productStateSlice.actions;
+export const selectProductByCategory = (state: any) =>
+  state.productState.productByCategory;
+export const {productFavourite, getProductByCategory, clearSeeAllData} =
+  productStateSlice.actions;
 
 export default productStateSlice.reducer;

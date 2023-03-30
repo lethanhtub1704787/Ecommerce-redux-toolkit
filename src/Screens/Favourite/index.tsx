@@ -1,11 +1,4 @@
-import {
-  View,
-  FlatList,
-  Text,
-  Button,
-  Alert,
-  TouchableOpacity,
-} from 'react-native';
+import {View, FlatList, Text} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {styles} from './styles';
 import CustomHeader from '@/Components/CustomHeader';
@@ -13,7 +6,7 @@ import ProductItems from '@/Components/ProductItems';
 
 import {pushScreen} from '@/Navigation/NavigationAction';
 import {ProductItemType} from '@/Types/productType';
-import {useAppDispatch, useAppSelector} from '@/Hooks/reduxHook';
+import {useAppSelector} from '@/Hooks/reduxHook';
 import {selectFavourites, selectProduct} from '@/Redux/Reducers/productReducer';
 
 const Favorites = () => {
@@ -27,11 +20,6 @@ const Favorites = () => {
     setData(favouritesData);
   };
 
-  // const [productData, setProductData] = useState<Array<ProductItemType>>(
-  //   productItems.filter(
-  //     (item: {isFavorite: boolean}) => item.isFavorite === true,
-  //   ),
-  // );
   const keyExtractor = (item: ProductItemType) => {
     return 'key' + item.id;
   };

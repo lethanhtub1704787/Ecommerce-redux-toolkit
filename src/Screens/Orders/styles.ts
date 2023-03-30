@@ -22,9 +22,9 @@ export const styles = StyleSheet.create({
     textTransform: 'none',
   },
   completedTabStyle: {
-    flex: 1,
     backgroundColor: '#E5E5E5',
     padding: 20,
+    paddingBottom: 0,
     alignItems: 'center',
   },
 });

@@ -23,20 +23,13 @@ import Splash from '@/Screens/Splash';
 import Checkout from '@/Screens/Checkout';
 import FinalCheckout from '@/Screens/Checkout/FinalCheckout';
 import Orders from '@/Screens/Orders';
+import SeeAllProduct from '@/Screens/SeeAllProduct';
 
 const Stack = createNativeStackNavigator<Root>();
 
 const RootStack = () => {
   const scheme = useColorScheme();
-  // const checkUserLoggin = async () => {
-  //   const userLoggedIn = await isLoggedIn();
-  //   console.log('is logged in: ', userLoggedIn);
-  // };
-  // useEffect(() => {
-  //   checkUserLoggin();
-  // }, []);
-
-  console.log('scheme: ', scheme);
+  // console.log('scheme: ', scheme);
   return (
     <NavigationContainer
       ref={navigationRef}
@@ -99,6 +92,11 @@ const HomeStack = () => {
   return (
     <HomeStackNavigator.Navigator screenOptions={{headerShown: false}}>
       <HomeStackNavigator.Screen name="Drawer" component={MyDrawer} />
+      <HomeStackNavigator.Screen
+        name="SeeAllProduct"
+        component={SeeAllProduct}
+        options={{animation: 'slide_from_right'}}
+      />
       <HomeStackNavigator.Screen
         name="Search"
         component={SearchScreen}

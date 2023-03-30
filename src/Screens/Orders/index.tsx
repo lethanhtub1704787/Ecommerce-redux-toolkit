@@ -1,15 +1,26 @@
-import {View, Text, Dimensions} from 'react-native';
+import {View, Text, Dimensions, FlatList} from 'react-native';
 import React, {useState} from 'react';
 import CustomHeader from '@/Components/CustomHeader';
 import {styles} from './styles';
 import {SceneMap, TabView, TabBar} from 'react-native-tab-view';
-import ItemCard from '@/Components/ItemCard';
+
+import OrderCard from './OrderCard';
+import {orders_xample} from './model';
 
 const WIDTH = Dimensions.get('window').width;
+
+const renderItem = ({item, index}: {item: any; index: number}) => {
+  return <OrderCard key={item.id} />;
+};
+
 const CompletedTab = () => {
   return (
     <View style={styles.completedTabStyle}>
-      <ItemCard cardType="order" />
+      <FlatList
+        data={orders_xample}
+        renderItem={renderItem}
+        keyExtractor={item => item.id}
+      />
     </View>
   );
 };
@@ -17,7 +28,7 @@ const CompletedTab = () => {
 const CancelledTab = () => {
   return (
     <View style={styles.completedTabStyle}>
-      <ItemCard cardType="order" />
+      <OrderCard />
     </View>
   );
 };

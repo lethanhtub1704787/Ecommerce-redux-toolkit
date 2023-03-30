@@ -8,14 +8,14 @@ export const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     width: '100%',
     borderRadius: 15,
-    justifyContent: 'space-between',
     alignItems: 'center',
   },
   itemInfoContainer: {
+    width: '80%',
     flexDirection: 'row',
-    justifyContent: 'center',
     alignItems: 'center',
     paddingVertical: 10,
+    // backgroundColor: 'red',
   },
   itemImageContainer: {
     width: 84,
@@ -44,14 +44,20 @@ export const styles = StyleSheet.create({
     fontWeight: '400',
     width: 100,
   },
-  orderStyle: {
+  orderDateContainer: {
+    width: '20%',
     justifyContent: 'center',
     alignItems: 'center',
-    // backgroundColor: 'red',
+    // backgroundColor: 'blue',
   },
   date: {
     fontSize: 13,
     color: 'rgba(0, 0, 0, 0.5)',
     fontWeight: '400',
+  },
+  itemPrice: {
+    fontSize: 14,
+    fontWeight: '700',
+    color: '#000000',
   },
 });

@@ -8,7 +8,7 @@ import rootReducer, {RootReducer} from './Reducers';
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  whitelist: ['authState'],
+  whitelist: ['authState', 'cartState', 'productState'],
   // stateReconciler: autoMergeLevel2,
 };
 
@@ -17,7 +17,10 @@ const finalReducer = persistReducer<RootReducer>(persistConfig, rootReducer);
 export const store = configureStore({
   reducer: finalReducer,
   middleware: getDefaultMiddleware =>
-    getDefaultMiddleware({serializableCheck: false}).concat(logger),
+    getDefaultMiddleware({
+      serializableCheck: false,
+      immutableCheck: false,
+    }).concat(logger),
 });
 
 export const persistor = persistStore(store);

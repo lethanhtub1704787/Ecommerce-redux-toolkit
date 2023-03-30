@@ -25,6 +25,7 @@ export type BottomTabParams = {
 
 export type HomeStackParams = {
   Drawer: undefined;
+  SeeAllProduct: {categoryID: string; categoryName: string};
   Search: undefined;
   ProductDetails: {product: ProductItemType};
   CheckoutStack: CheckoutParams;
